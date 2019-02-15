@@ -27,4 +27,5 @@ Route::resource('/project', 'ProjectController');
 Route::resource('/user', 'UserController');
 Route::resource('/daily', 'ReportController');
 Route::resource('/document', 'ProjectFileController');
+Route::post('/report','ReportActivityController@store')->name('report.save');
 

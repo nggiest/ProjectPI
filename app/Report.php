@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\ReportActivity;
+use App\User;
 
 class Report extends Model
 {
@@ -12,16 +14,16 @@ class Report extends Model
 
     protected $table='reports';
 
-    public function user()
+    public function hasUser()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOne('App\User', 'user');
     }
 
     function getHariIniAttribute() {
         return \Carbon::now()->format('d-m-Y i');
     }
 
-    public function reportactivity(){
-        return $this->belongsTo(ReportActivity::class);
+    public function activities(){
+        return $this->hasMany('App\ReportActivity', 'report_id', 'id');
     }
 }

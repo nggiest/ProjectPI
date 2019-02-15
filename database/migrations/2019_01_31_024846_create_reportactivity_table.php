@@ -15,7 +15,7 @@ class CreateReportactivityTable extends Migration
     {
         Schema::create('reportactivity', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('project');
+            $table->string('project_id');
             $table->string('report_id');
             $table->string('module');
             $table->string('activity');

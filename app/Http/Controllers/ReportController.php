@@ -9,6 +9,7 @@ use App\User;
 use App\MDPriority;
 use App\Project;
 use App\MDStatus;
+use Auth;
 use Illuminate\Support\Facades\DB;
 class ReportController extends Controller
 {
@@ -19,14 +20,11 @@ class ReportController extends Controller
      */
     public function index()
     {
-    
-        $datecount = DB::table('reports')->selectRaw('date, count(*) as countId')->groupBy('date')->get();
-        return view('reports.index', compact ('datecount' ));
+       $report = Report::all();
+       $reportcount = DB::table('reportactivity')->select(DB::Raw('project_id, count(*) as countId'))->groupBy('project_id')->get();
+    //    return view('reports.index', compact ('report','reportcount'));
 
-
-    
-
-        
+    return $reportcount;
     }
 
     /**
@@ -51,22 +49,42 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-       $report = Report::create([
-            // 'user' => $request->input('id'),
-            'user' => $request->user()['id'],
-            'date' => $request['date'],
-        ]);
+        dd($request->user);
+    
+    //    if (Report::where('user', $request->user)
+    //         ->where('date', $request->date)
+    //         ->exists()) {
 
-        $ra = ReportActivity::create([
-            'project' => $request['project'],
-            'report_id' => $report->id,
-            'module' => $request['module'],
-            'activity' => $request['activity'],
-            'priority' => $request['priority'],
-            'status' => $request['status'],
-        ]);
+    //         $errorMessage = "User sudah membuat report!";
+    //         return redirect('/daily/create')->with('status', $errorMessage);
+    //     }
+    
+    //    else{
 
-        return redirect()->route('daily.index');
+    //     $this->validate($request,[
+    //             'module' => 'required|min:10',
+    //             'activity' => 'required|min:10',
+    //             'priority'=> 'required',
+    //             'priority' => 'required',
+    //             'status' => 'required',
+    //     ]);
+
+    //         $report = Report::create($request->all());
+
+    //         $ra = new ReportActivity();
+    //         $ra->project_id = $request['project'];
+    //         $ra->report_id = $report->id;
+    //         $ra->module = $request['module'];
+    //         $ra->activity = $request['activity'];
+    //         $ra->priority = $request['priority'];
+    //         $ra->status = $request['status'];
+    //         $ra->save();
+
+    //         return redirect('/daily/create')->with('status', 'Success');
+    //    }
+    //    return $request;    
+
+       
     }
 
     /**
@@ -111,6 +129,12 @@ class ReportController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //p
+    }
+
+
+    public function help($id)
+    {
+
     }
 }

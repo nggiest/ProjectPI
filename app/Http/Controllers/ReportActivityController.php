@@ -35,7 +35,16 @@ class ReportActivityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $report=Report::all();
+        // $ra = ReportActivity::create([
+        //     'project_id' => $request['project'],
+        //     'report_id' => $report->id,
+        //     'module' => $request['module'],
+        //     'activity' => $request['activity'],
+        //     'priority' => $request['priority'],
+        //     'status' => $request['status'], ]);
+        
+        return redirect()->route('daily.index');
     }
 
     /**

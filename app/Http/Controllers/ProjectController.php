@@ -179,7 +179,7 @@ class ProjectController extends Controller
             
         }
 
-        if (ReportActivity::where('project', '=', Input::get('id'))->exists()){
+        if (ReportActivity::where('project_id', '=', Input::get('id'))->exists()){
 
             $reportactivity = ReportActivity::all();
             $reportactivityid = $reportactivityid->project;
