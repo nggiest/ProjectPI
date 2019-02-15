@@ -28,7 +28,7 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <div class="box-body">
+            <div class="box-body" id="formbox">
               <div class="form-group">
                   <label for="Project">Project</label>
                   <select class="form-control" name="project">
