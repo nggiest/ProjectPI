@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
   <div class="row">
-    <form method="POST" action="{{ route('daily.store')}}">
+    <form id="giomales" method="POST" action="{{ route('daily.store')}}">
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="panel-heading">Daily Report</div>
@@ -33,11 +33,11 @@
             
             <div class="box-body" id="activitybox">
               
-              <form class="form-main">
+              <!-- <form class="form-main"> -->
                 <div class="form-block">
                   <div class="form-group">
                     <label for="Project">Project</label>
-                    <select class="form-control" name="project">
+                    <select class="form-control ini" name="project">
                       @foreach($project as $projects)
                       <option name="project" id="project" value="{{$data = $projects->id}}">{{$projects->name}}</option>
                       @endforeach
@@ -45,15 +45,15 @@
                   </div>
                   <div class="form-group">
                     <label for="">Module/Parts</label>
-                    <input type="text" class="form-control" id="module" name="module" placeholder="Module">
+                    <input type="text" class="form-control ini" id="module" name="module" placeholder="Module">
                   </div>
                   <div class="form-group">
                     <label for="">Activity</label>
-                    <input type="text" class="form-control" id="activity" name="activity" adplaceholder="Activity">
+                    <input type="text" class="form-control ini" id="activity" name="activity" adplaceholder="Activity">
                   </div>
                   <div class="form-group">
                         <label for="Priority">Priority</label>
-                        <select class="form-control" name="priority">
+                        <select class="form-control ini" name="priority">
                           @foreach($priority as $priority)
                           <option id="priority" name="priority" value="{{$data = $priority->id}}">{{$priority->priority}}</option>
                           @endforeach
@@ -61,14 +61,14 @@
                   </div>
                   <div class="form-group">
                       <label for="Status">Status</label>
-                      <select class="form-control" name="status">
+                      <select class="form-control ini" name="status">
                         @foreach($status as $status)
                         <option id="status" name="status" value="{{$data = $status->status }}">{{$status->status}}</option>
                         @endforeach
                       </select>
                   </div>
                 </div>
-              </form>
+              <!-- </form> -->
                 <!-- /.box-body -->
 
                 
@@ -131,6 +131,15 @@ var count = 1;
       } else {
         alert("You can't remove this activity");
       }
+  });
+
+  $(document).on('submit', 'form', function(){
+    $(this).find('.cloningan').each(function (i, el) {
+      $(el).find('.ini').each(function(j, fel){
+        var name = $(fel).attr('name');
+        $(fel).attr('name', 'activities['+i+']['+name+']');
+      });
+    });
   });
 
 
