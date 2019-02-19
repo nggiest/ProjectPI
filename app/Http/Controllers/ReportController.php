@@ -49,8 +49,16 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->user);
-    
+        // dd($request->user);
+
+        // $this->validate($request,[
+        //                 'module' => 'required|min:10',
+        //                 'activity' => 'required|min:10',
+        //                 'project'=> 'required',
+        //                 'priority' => 'required',
+        //                 'status' => 'required',
+        //         ]);
+        
     //    if (Report::where('user', $request->user)
     //         ->where('date', $request->date)
     //         ->exists()) {
@@ -69,20 +77,24 @@ class ReportController extends Controller
     //             'status' => 'required',
     //     ]);
 
-    //         $report = Report::create($request->all());
+        //     $report = Report::create($request->all());
 
-    //         $ra = new ReportActivity();
-    //         $ra->project_id = $request['project'];
-    //         $ra->report_id = $report->id;
-    //         $ra->module = $request['module'];
-    //         $ra->activity = $request['activity'];
-    //         $ra->priority = $request['priority'];
-    //         $ra->status = $request['status'];
-    //         $ra->save();
+        // //foreach($ as $ra){
+            
+        //     $ra = new ReportActivity();
+        //     $ra->project_id = $request['project'];
+        //     $ra->report_id = $report->id;
+        //     $ra->module = $request['module'];
+        //     $ra->activity = $request['activity'];
+        //     $ra->priority = $request['priority'];
+        //     $ra->status = $request['status'];
+        //     $ra->save();
+
+       // }
 
     //         return redirect('/daily/create')->with('status', 'Success');
     //    }
-    //    return $request;    
+       return $request;    
 
        
     }

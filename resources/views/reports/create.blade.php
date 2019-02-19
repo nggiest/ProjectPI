@@ -4,10 +4,9 @@
 <div class="container">
   <div class="row">
     <form method="POST" action="{{ route('daily.store')}}">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="box box-primary">
                 <div class="panel-heading">Daily Report</div>
-
                 <div class="panel-body">
                     <form class="form-horizontal" >
                         {{ csrf_field() }}
@@ -21,59 +20,67 @@
                     </form>
                 </div>
             </div>
-
-            <div class="box box-primary">
+            <button type ="button" class="btn btn-success" id="btn1"> <i class="fa fa-plus-circle"> </i> Activities </button> <br> <br>
+          <div id="box-activities">
+        
+          <div class="box box-primary cloningan" id="myactivities">
             <div class="box-header with-border">
-              <h3 class="box-title">Daily Report {{ session('status') }}</h3>
+              <h3 class="box-title">My Report</h3>
+              <button class="btn btn-box-tool delbutton" type="button"><i class="fa fa-times"></i></button>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <div class="box-body" id="formbox">
-              <div class="form-group">
-                  <label for="Project">Project</label>
-                  <select class="form-control" name="project">
-                    @foreach($project as $projects)
-                    <option name="project" id="project" value="{{$data = $projects->id}}">{{$projects->name}}</option>
-                    @endforeach
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="">Module/Parts</label>
-                  <input type="text" class="form-control" id="module" name="module" placeholder="Module">
-                </div>
-                <div class="form-group">
-                  <label for="">Activity</label>
-                  <input type="text" class="form-control" id="activity" name="activity" adplaceholder="Activity">
-                </div>
+            
+            <div class="box-body" id="activitybox">
               
+              <form class="form-main">
+                <div class="form-block">
                   <div class="form-group">
-                      <label for="Priority">Priority</label>
-                      <select class="form-control" name="priority">
-                        @foreach($priority as $priority)
-                        <option id="priority" name="priority" value="{{$data = $priority->id}}">{{$priority->priority}}</option>
-                        @endforeach
-                      </select>
-                    </div>
-
-
-                  <div class="form-group">
-                    <label for="Status">Status</label>
-                    <select class="form-control" name="status">
-                      @foreach($status as $status)
-                      <option id="status" name="status" value="{{$data = $status->status }}">{{$status->status}}</option>
+                    <label for="Project">Project</label>
+                    <select class="form-control" name="project">
+                      @foreach($project as $projects)
+                      <option name="project" id="project" value="{{$data = $projects->id}}">{{$projects->name}}</option>
                       @endforeach
                     </select>
                   </div>
+                  <div class="form-group">
+                    <label for="">Module/Parts</label>
+                    <input type="text" class="form-control" id="module" name="module" placeholder="Module">
+                  </div>
+                  <div class="form-group">
+                    <label for="">Activity</label>
+                    <input type="text" class="form-control" id="activity" name="activity" adplaceholder="Activity">
+                  </div>
+                  <div class="form-group">
+                        <label for="Priority">Priority</label>
+                        <select class="form-control" name="priority">
+                          @foreach($priority as $priority)
+                          <option id="priority" name="priority" value="{{$data = $priority->id}}">{{$priority->priority}}</option>
+                          @endforeach
+                        </select>
+                  </div>
+                  <div class="form-group">
+                      <label for="Status">Status</label>
+                      <select class="form-control" name="status">
+                        @foreach($status as $status)
+                        <option id="status" name="status" value="{{$data = $status->status }}">{{$status->status}}</option>
+                        @endforeach
+                      </select>
+                  </div>
+                </div>
+              </form>
+                <!-- /.box-body -->
 
-              <!-- /.box-body -->
-
-              <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Submit</button>
-             
+                
               </div>
+               
             </div>
+            </div>
+            <div class="box-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div> 
           </div>
-
+          
         </div>
     </form>
 
@@ -81,4 +88,62 @@
 </div>
 
 @endsection
+
+@section('script')
+<script>  
+// function cek() {
+//   console.log('hello');
+
+// }
+
+// var actcount = document.getElementById("myactivities"),
+//   count = 0;
+// button.onclick = function() {
+//   count += 1;
+// };
+var count = 1;
+
+                        //  var clone = $('#myactivities').clone('#activitybox');
+                        //  $('#myactivities').append(clone);
+                        // //  var actcount = document.getElementById("myactivities"),
+                        // //  count = 0;
+                        // //  button.onclick = function() {
+                        // //  count += 1;
+                        // //     };
+                        
+                        // // console.log(count++);
+                        // $("#myactivities").attr('id',counter++);
+
+                        
+          // Global unique counter
+    $('#btn1').click(function() {
+        count++; // Increment counter
+        $('.cloningan:first').clone(true).appendTo('#box-activities'). // Clone and append
+          filter('[id]').each(function() { // For each new item with an ID
+            this.id = this.id + '_' + count; // Append the counter to the ID
+        });
+    });
+
+  $(document).on("click", ".delbutton", function() {
+      // console.log($(".cloningan").length);
+      if ($(".cloningan").length > 1) {
+        $(this).parent().parent().remove();
+      } else {
+        alert("You can't remove this activity");
+      }
+  });
+
+
+// $("#delbutton").click(function () {
+//         var divCount = $("#myacitivities").children("div[id=activitybox]").length;
+//         while (divCount > 1) // comparing with 1 beacuse: It will keep default div and remove/ rest
+//     {       
+//       $("#myactivities").children("div[id=activitybox]:last").remove();
+//       divCount;
+//     }
+//  });
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+@endsection
+            
                        
