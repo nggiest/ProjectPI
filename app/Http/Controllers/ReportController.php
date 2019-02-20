@@ -21,10 +21,10 @@ class ReportController extends Controller
     public function index()
     {
        $report = Report::all();
-       $reportcount = DB::table('reportactivity')->select(DB::Raw('project_id, count(*) as countId'))->groupBy('project_id')->get();
-    //    return view('reports.index', compact ('report','reportcount'));
-
-    return $reportcount;
+       $reportcount = DB::table('reportactivity')->select(DB::Raw('count(report_id) as countId'))->groupBy('report_id')->get();
+       return view('reports.index', compact ('report','reportcount'));
+        
+    
     }
 
     /**
@@ -49,52 +49,39 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->user);
+            DB::beginTransaction();
 
-        // $this->validate($request,[
-        //                 'module' => 'required|min:10',
-        //                 'activity' => 'required|min:10',
-        //                 'project'=> 'required',
-        //                 'priority' => 'required',
-        //                 'status' => 'required',
-        //         ]);
-        
-    //    if (Report::where('user', $request->user)
-    //         ->where('date', $request->date)
-    //         ->exists()) {
+            try {
+                // Interacting with the database
+                $report = Report::create([
+                    'user' => Auth::user()->id,
+                    'date' => $request['date'],
+                ]);
+                $id = $report->id;
+                $data = [] ;
+                foreach ($request['activities'] as $activity) {
+                    array_push($data, 
+                        [
+                            'project_id' => $activity['project_id'],
+                            'report_id' => $id,
+                            'module' => $activity['module'],
+                            'activity' =>  $activity['activity'],
+                            'priority' => $activity['priority'],
+                            'status' => $activity['status']
+                        ]
+                    );           
+                }  
+                ReportActivity::insert($data);
+                DB::commit();    // Commiting  ==> There is no problem whatsoever
+            } catch (Exception $e) {
+                DB::rollback();   // rollbacking  ==> Something went wrong
+            }
 
-    //         $errorMessage = "User sudah membuat report!";
-    //         return redirect('/daily/create')->with('status', $errorMessage);
-    //     }
-    
-    //    else{
+       
 
-    //     $this->validate($request,[
-    //             'module' => 'required|min:10',
-    //             'activity' => 'required|min:10',
-    //             'priority'=> 'required',
-    //             'priority' => 'required',
-    //             'status' => 'required',
-    //     ]);
-
-        //     $report = Report::create($request->all());
-
-        // //foreach($ as $ra){
-            
-        //     $ra = new ReportActivity();
-        //     $ra->project_id = $request['project'];
-        //     $ra->report_id = $report->id;
-        //     $ra->module = $request['module'];
-        //     $ra->activity = $request['activity'];
-        //     $ra->priority = $request['priority'];
-        //     $ra->status = $request['status'];
-        //     $ra->save();
-
-       // }
-
-    //         return redirect('/daily/create')->with('status', 'Success');
+            return redirect('/daily/create')->with('status', 'Success');
     //    }
-       return $request;    
+    //    return $data;    
 
        
     }

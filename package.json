@@ -20,6 +20,7 @@
     },
     "dependencies": {
         "gentelella": "^1.4.0",
-        "save": "^2.3.3"
+        "save": "^2.3.3",
+        "sweetalert": "^2.1.2"
     }
 }

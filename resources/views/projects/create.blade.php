@@ -81,7 +81,7 @@
                             <div class="col-sm-10">
                             <select name="status" id="status">
                                @foreach($status as $statusku)
-                                <option name="status" id="status" value="{{$data = $statusku->status}}">{{$statusku->status}} </option>
+                                <option name="status" id="status" value="{{$data = $statusku->id}}">{{$statusku->name}} </option>
                                @endforeach
                             </select>
                             </div>
@@ -95,30 +95,31 @@
                         </div>
                     
             
-            <div class="col-md-12">
-            <div class="box box-primary">
-                <div class="box-title">Project Member</div>
+                        <div class="col-md-12">
+                            <div class="box box-primary">
+                                <div class="box-title">Project Member</div>
 
-                <div class="box-body">
-                <div class="form-group">
-                  <div class="checkbox">
+                                    <div class="box-body">
+                                        
+                                            <div class="checkbox">
 
-                  @foreach($user as $users)
-                    <label>
-                    
-                      <input type="checkbox" name="user_id[]" id="user_id[]" value="{{$data = $users->id}}"> {{$users->name}}
-                      
-                    </label>
-                 @endforeach 
-                  </div>
-                
+                                                @foreach($user as $users)
+                                                    <label>
+                                        
+                                                    <input type="checkbox" name="user_id[]" id="user_id[]" value="{{$data = $users->id}}"> {{$users->name}}
+                                        
+                                                    </label>
+                                                @endforeach 
+                                            </div>
+                                    
+                                        
+                                    </div> 
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </div> 
-            </div>
-             </div>
-             </form>
-            </div>
             
+            </div>
         </div>
 <script>
 

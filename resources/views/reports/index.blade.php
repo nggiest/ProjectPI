@@ -24,13 +24,13 @@
                )
 
                @foreach ($report as $reports)
-          
+               
                 <tr>
                   <td>{{$no++}}</td>
                   <td>{{$reports->date}}</td>
                   
                   <td>
-                     {{$reportcount->countId}}
+                     {{$countid}}
                   </td>
                   <td> <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal-report">
                   <i class="fa fa-fw fa-eye"></i>

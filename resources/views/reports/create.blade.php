@@ -37,9 +37,9 @@
                 <div class="form-block">
                   <div class="form-group">
                     <label for="Project">Project</label>
-                    <select class="form-control ini" name="project">
+                    <select class="form-control ini" name="project_id">
                       @foreach($project as $projects)
-                      <option name="project" id="project" value="{{$data = $projects->id}}">{{$projects->name}}</option>
+                      <option name="project_id" id="project_id" value="{{$data = $projects->id}}">{{$projects->name}}</option>
                       @endforeach
                     </select>
                   </div>
@@ -63,7 +63,7 @@
                       <label for="Status">Status</label>
                       <select class="form-control ini" name="status">
                         @foreach($status as $status)
-                        <option id="status" name="status" value="{{$data = $status->status }}">{{$status->status}}</option>
+                        <option id="status" name="status" value="{{$data = $status->id }}">{{$status->name}}</option>
                         @endforeach
                       </select>
                   </div>
@@ -91,30 +91,10 @@
 
 @section('script')
 <script>  
-// function cek() {
-//   console.log('hello');
 
-// }
-
-// var actcount = document.getElementById("myactivities"),
-//   count = 0;
-// button.onclick = function() {
-//   count += 1;
-// };
 var count = 1;
 
-                        //  var clone = $('#myactivities').clone('#activitybox');
-                        //  $('#myactivities').append(clone);
-                        // //  var actcount = document.getElementById("myactivities"),
-                        // //  count = 0;
-                        // //  button.onclick = function() {
-                        // //  count += 1;
-                        // //     };
-                        
-                        // // console.log(count++);
-                        // $("#myactivities").attr('id',counter++);
-
-                        
+ 
           // Global unique counter
     $('#btn1').click(function() {
         count++; // Increment counter

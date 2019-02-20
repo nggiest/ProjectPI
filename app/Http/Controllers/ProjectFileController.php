@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\ProjectFile;
 use App\Project;
 use App\User;
+use Alert;
 use Webpatser\Uuid\Uuid;
 
 class ProjectFileController extends Controller
@@ -48,7 +49,7 @@ class ProjectFileController extends Controller
         ]);
         $project = Project::all();
         $uploadedFile = $request->file('file');
-        $destinationPath = 'public/files/';   
+        $destinationPath = ('public/files');   
         $extension =  $uploadedFile->getClientOriginalExtension();
         $filename = Uuid::generate(4).'.'.$extension;    
         $file = ProjectFile::create([
@@ -60,8 +61,11 @@ class ProjectFileController extends Controller
 
           
         ]);
+            
+        
         $uploadedFile->storeAs($destinationPath,$filename);
-        return redirect()->route('project.show',$request->project_id);
+        // Alert::message('Document added successfully');
+        // return redirect()->route('project.show',$request->project_id);
     }
 
     /**
