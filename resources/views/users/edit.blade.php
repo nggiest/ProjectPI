@@ -54,8 +54,8 @@
 
                             <div class="col-md-6">
                             <select name="status" id="status" class="form-control select2" >
-                                <option name="status" id="status" value="{{$data = 'Active User'}}"> Active User </option>
-                                <option name="status" id="status" value="{{$data = 'Non Active User'}}"> Non Active User </option>
+                                <option name="status" id="status" value="{{$data = 'Active User'}}" {{ $user->status  == $data ? 'selected' : '' }} > Active User </option>
+                                <option name="status" id="status" value="{{$data = 'Non Active User'}}" {{ $user->status  == $data ? 'selected' : '' }}> Non Active User </option>
                                 </select>
                             </div>
                           </div>
@@ -65,8 +65,8 @@
 
                             <div class="col-md-6">
                                 <select name="role" id="role">
-                                <option name="role" id="role" value="{{$data = 'Admin'}}"> Admin </option>
-                                <option name="role" id="role" value="{{$data = 'User'}}"> User </option>
+                                <option name="role" id="role" value="{{$data = 'Admin'}} " {{ $user->role  == $data ? 'selected' : '' }}> Admin </option>
+                                <option name="role" id="role" value="{{$data = 'User'}}" {{ $user->role  == $data ? 'selected' : '' }}> User </option>
                                 </select>
                             </div>
                           </div>

@@ -64,8 +64,8 @@ class ProjectFileController extends Controller
             
         
         $uploadedFile->storeAs($destinationPath,$filename);
-        // Alert::message('Document added successfully');
-        // return redirect()->route('project.show',$request->project_id);
+        Alert::message('Document added successfully');
+        return redirect()->route('project.show',$request->project_id);
     }
 
     /**
@@ -88,6 +88,7 @@ class ProjectFileController extends Controller
     public function edit($id)
     {
         $project= Project::all();
+        $projectfile = ProjectFile::all();
         return view('projects.documentedit', compact('projectfile','project'));
     }
 
@@ -100,7 +101,27 @@ class ProjectFileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $uploadedFile = $request->file('file');
+        $destinationPath = ('public/files');   
+        $extension =  $uploadedFile->getClientOriginalExtension();
+        $filename = Uuid::generate(4).'.'.$extension;
+        $file = ProjectFile::update([
+            'name' => $request->name,
+            'filename' => $filename,
+            'description' => $request->description,
+            'project_id' => $request->project_id,
+            'upload_by' => $request->upload_by,
+
+          
+        ]);
+            
+        
+        $uploadedFile->storeAs($destinationPath,$filename);
+        Alert::message('Document added successfully');
+        return redirect()->route('project.show',$request->project_id);
+
+
+
     }
 
     /**

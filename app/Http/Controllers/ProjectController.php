@@ -25,7 +25,7 @@ class ProjectController extends Controller
         $user=User::all();
         $project=Project::all();
         $project = DB::table('projects')->paginate(10);
-        return view('projects.index', compact('project'));
+        return view('projects.index', compact('project','status'));
     }
 
     /**
@@ -49,33 +49,19 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        // $this->validate($request,[
-        //     'name' => 'required|min:5',
-        //     'description' => 'required|min:7',
-        //     'url'=> 'required|min:10',
-        //     'start_date' => 'required',
-        //     'status' => 'required',
+        $this->validate($request,[
+            'name' => 'required|min:5',
+            'description' => 'required|min:7',
+            'url'=> 'required|min:10',
+            'start_date' => 'required',
+            'status' => 'required',
             
-        // ]);
+        ]);
         
         $project = Project::create($request->all());
-        // $project = new Project();
-        // $project->name = $request['name'];
-        // $project->description = $request['description'];
-        // $project->url = $request['description'];
-        // $project->start_date = $request['start_date'];
-        // $project->status = $request['status'];
-        // $project->save();
-        
-
-        
-        // $projectmember = ProjectMember::all();
-        // $pm = new ProjectMember();
 
         foreach($request->user_id as $projectmember) {
-            // $pm->user_id = $projectmember;
-            // $pm->project_id = $project->id;
-            // $pm->create();
+            
             $dxx = ProjectMember::create([
                 'user_id' => $projectmember,
                 'project_id' => $project->id
@@ -104,6 +90,8 @@ class ProjectController extends Controller
         $pff = ProjectFile::all();
         $projectfile = DB::table('project_file')->where('project_id',$id)->get();
         
+
+        
        return view('projects.detail', compact('projectmember', 'project','projectfile','pff'));
     //    return compact('projectmember');
         
@@ -119,9 +107,20 @@ class ProjectController extends Controller
     public function edit($id)
     {
         $status = MDStatus::all();
+        // $statusid = MDStatus::select('id');
         $user=User::all();
         $project=Project::findOrFail($id);
-        return view('projects.edit', compact('project','status','user'));
+        $projectmember =  DB::table('project_member')->select('user_id as user_id')->where('project_id',$id)->get();
+        // var_dump($projectmember);
+        $projectMember = [];
+        foreach($project->projectmembers as $member) {
+            array_push($projectMember, $member->user_id);
+        } 
+        $project->member = $projectMember;
+
+        // return $project;
+
+        return view('projects.edit', compact('project','status','user','projectmember'));
     }
 
     /**
@@ -133,21 +132,55 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $this->validate($request,[
+    
+        $this->validate($request,[
             
-        //     'name' => 'required|min:5',
-        //     'description' => 'required|min:7',
-        //     'url'=> 'required|min:10',
-        //     'status' => 'required',
+            'name' => 'required|min:5',
+            'description' => 'required|min:7',
+            'url'=> 'required|min:10',
+            'status' => 'required',
             
-        // ]);
+        ]);
         
-        // $project = Project::findOrFail($id);
-        // $project->update($request->all());
+        $project = Project::findOrFail($id);
+        $User = User::All();
+        $newProjectMember = $request->user_id;
         
-        // return redirect()->route('project.index');
+        $oldProjectMember = [];
+        foreach (ProjectMember::where('project_id', 26)->get() as $member) {
+            array_push($oldProjectMember, $member->user_id);
+        } 
 
-        return $request;
+        // return [$newProjectMember, $oldProjectMember];
+
+        foreach($request->user_id as $projectmember) {
+            if(!in_array($projectmember, $oldProjectMember)) { 
+                ProjectMember::create([
+                'user_id' => $projectmember,
+                'project_id' => $project->id
+                ]);
+            }
+        }
+        foreach($oldProjectMember as $projectmember) {
+            if(!in_array($projectmember, $newProjectMember)) { 
+                ProjectMember::where('user_id', $projectmember)->where('project_id', $id)->delete();
+            }
+        }
+
+        // foreach($request->user_id as $projectmember) {
+        //     if(ProjectMember::where('user_id',$request->user_id)->where('project_id', $id)->count() == 0 ){
+                
+        //         ProjectMember::create([
+        //             'user_id' => $projectmember,
+        //             'project_id' => $project->id
+        //             ]);
+        //     }
+        // }
+
+
+        
+        return redirect()->route('project.index');
+
     }
 
     /**
@@ -162,7 +195,7 @@ class ProjectController extends Controller
         if (ProjectMember::where('project_id', '=', Input::get('id'))->exists())
         {
             $projectmember = ProjectMember::all();
-            $projectmemberid = $projectmember->id;
+            $projectmemberid = $projectmember->project_id;
             foreach ($projectmemberid as $pmid ){
                 $pmid->delete();
             }

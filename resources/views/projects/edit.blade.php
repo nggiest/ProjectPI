@@ -3,12 +3,13 @@
 @section('content')
 <div class="col-md-12">
             <div class="box box-primary">
-                <div class="box-title">Create Project</div>
+                <div class="box-title"> <h3> Create Project </h3></div>
 
-                <div class="box-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('project.update',$project->id )}}">
+                
+                <form class="form-horizontal" method="POST" action="{{ route('project.update',$project->id )}}">
+                {{ method_field('PUT') }}
                         {{ csrf_field() }}
-                        
+                    <div class="box-body">
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
 
                             <label for="name" class="col-sm-2 control-label">Name</label>
@@ -59,42 +60,53 @@
                             <div class="col-sm-10">
                             <select name="status" id="status">
                             @foreach($status as $statusku )
-                                <option name="status" id="status" value="{{$statusku->status}}" {{($statusku->status==$status?'selected':'')}} > {{$statusku->status}} </option>
+                                <option name="status" id="status" value="{{$statusku->id}}" {{ $project->status  == $statusku->id ? 'selected' : '' }} > {{$statusku->name}} </option>
                             @endforeach
                                 </select>
                             </div>
                           </div>
 
 
+                    
+            
+                        <!-- <div class="col-md-12"> -->
+                            <!-- <div class="box-body 2"> -->
+                                <!-- <div class="box-title">  -->
+                                    <h3>Project Member </h3>
+                                <!-- </div> -->
+<!-- 
+                                    <div class="box-body"> -->
+                                        
+                                            <div class="checkbox">
+
+                                                @foreach($user as $users)
+                                                    <label>
+                                        
+                                                    <input type="checkbox" name="user_id[]" id="user_id[]" value="{{$users->id}}" 
+                                                    @if(in_array($users->id, $project->member))
+                                                    checked
+                                                    @endif                                                    
+                                                     > {{$users->name}} 
+                                        
+                                                    </label>
+
+                                                    <br>
+                                                @endforeach 
+                                            </div>
+                                    
+                                        
+                                    </div> 
+                            <!-- </div> -->
+                        <!-- </div> -->
+
+                        
                         <div class="box-footer">
                                 <button type="submit" class="btn btn-primary">
                                     Upload
                                 </button>
                         </div>
-                    
-            
-                        <div class="col-md-12">
-                            <div class="box box-primary">
-                                <div class="box-title">Project Member</div>
-
-                                <div class="box-body">
-                                    <div class="form-group">
-                                        <div class="checkbox">
-                                            @foreach($user as $users)
-                                                <label>
-                                                
-                                                <input type="checkbox" name="user_id[]" id="user_id[]" value="{{$data = $users->id}}"> {{$users->name}}
-                                                
-                                                </label>
-                                            @endforeach 
-                                        </div>
-                                    
-                                    </div>
-                                </div> 
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
                     
             </div>
 </div>

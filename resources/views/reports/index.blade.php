@@ -30,7 +30,7 @@
                   <td>{{$reports->date}}</td>
                   
                   <td>
-                     {{$countid}}
+                     {{$reportcount->countId}}
                   </td>
                   <td> <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal-report">
                   <i class="fa fa-fw fa-eye"></i>

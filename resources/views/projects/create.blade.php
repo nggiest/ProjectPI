@@ -89,8 +89,8 @@
 
 
                         <div class="box-footer">
-                                <button type="submit" class="btn btn-primary">
-                                    Upload
+                                <button type="submit" class="btn btn-primary pull-right">
+                                    Create
                                 </button>
                         </div>
                     
