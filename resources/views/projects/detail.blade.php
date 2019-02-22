@@ -43,7 +43,9 @@
               <!-- /.tab-pane -->
               <div class="tab-pane {{ !empty(@session('projectfilestatus')) && @session('projectfilestatus') == '1' ? 'active' : '' }}" id="tab_2">
                 <form action="{{route('document.create')}}"> 
-                  <button class="btn btn-block btn-default" type="submit"> <i class="fa fa-plus"> </i> Add Document </button>
+                  <button class="btn btn-block btn-default" type="submit" > <i class="fa fa-plus"> </i> Add Document </button>
+                 <input type="hidden" name="project_id" id="project_id" value="{{$project->id}}">
+
                 </form> 
                 <br>
                 <table id="example2" class="table table-bordered">

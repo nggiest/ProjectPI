@@ -7,6 +7,7 @@ use App\ProjectFile;
 use App\Project;
 use App\User;
 use Alert;
+use Illuminate\Support\Facades\Input;
 use Webpatser\Uuid\Uuid;
 
 class ProjectFileController extends Controller
@@ -30,7 +31,7 @@ class ProjectFileController extends Controller
     {
         $project = Project::all();
         $projectfile = ProjectFile::all();
-        return view('projects.document', compact ('project'));
+        return view('projectfiles.create', compact ('project','projectfile'));
     }
 
     /**
@@ -47,7 +48,12 @@ class ProjectFileController extends Controller
             'description' => 'required |max:128',
             
         ]);
+        
+        // return $request;
+        // dd($request);
+       
         $project = Project::all();
+        // $projectid = Input::get('project_id');
         $uploadedFile = $request->file('file');
         $destinationPath = ('public/files');   
         $extension =  $uploadedFile->getClientOriginalExtension();
@@ -58,10 +64,9 @@ class ProjectFileController extends Controller
             'description' => $request->description,
             'project_id' => $request->project_id,
             'upload_by' => $request->upload_by,
-
-          
+            'project_id' => $request->input('project_idx'),
         ]);
-            
+        
         
         $uploadedFile->storeAs($destinationPath,$filename);
         Alert::message('Document added successfully');
@@ -89,7 +94,7 @@ class ProjectFileController extends Controller
     {
         $project= Project::all();
         $projectfile = ProjectFile::all();
-        return view('projects.documentedit', compact('projectfile','project'));
+        return view('projectfiles.edit', compact('projectfile','project'));
     }
 
     /**
@@ -117,7 +122,7 @@ class ProjectFileController extends Controller
             
         
         $uploadedFile->storeAs($destinationPath,$filename);
-        Alert::message('Document added successfully');
+        Alert::message('Document update successfully');
         return redirect()->route('project.show',$request->project_id);
 
 

@@ -21,11 +21,10 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $status = MDStatus::all();
         $user=User::all();
-        $project=Project::all();
-        $project = DB::table('projects')->paginate(10);
-        return view('projects.index', compact('project','status'));
+        $projects=Project::all();
+        
+        return view('projects.index', compact('projects'));
     }
 
     /**
@@ -81,6 +80,7 @@ class ProjectController extends Controller
     public function show($id)
     {
         $project = Project::findOrFail($id);
+        $projects = Project::all();
         $projectmember = DB::table('project_member')
         ->join('users', 'users.id', '=', 'project_member.user_id')
         ->join('projects', 'projects.id', '=', 'project_member.project_id')
@@ -92,7 +92,7 @@ class ProjectController extends Controller
         
 
         
-       return view('projects.detail', compact('projectmember', 'project','projectfile','pff'));
+       return view('projects.detail', compact('projectmember', 'project','projectfile','pff','projects'));
     //    return compact('projectmember');
         
 
@@ -110,6 +110,7 @@ class ProjectController extends Controller
         // $statusid = MDStatus::select('id');
         $user=User::all();
         $project=Project::findOrFail($id);
+       
         $projectmember =  DB::table('project_member')->select('user_id as user_id')->where('project_id',$id)->get();
         // var_dump($projectmember);
         $projectMember = [];
@@ -120,7 +121,7 @@ class ProjectController extends Controller
 
         // return $project;
 
-        return view('projects.edit', compact('project','status','user','projectmember'));
+        return view('projects.edit', compact('project','status','user','projectmember','statusid'));
     }
 
     /**

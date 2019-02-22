@@ -22,7 +22,7 @@ class Project extends Model
         return $this->hasMany(ReportActivity::class);
     }
 
-    public function status(){
-        return $this->belongsTo(MDStatus::class);
+    public function statuses(){
+        return $this->belongsTo(MDStatus::class, 'status');
     }
 }

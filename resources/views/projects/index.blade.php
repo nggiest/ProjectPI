@@ -20,19 +20,19 @@
                 </tr>
               </thead>
               <tbody>
-              @foreach($project as $projects)
+              @foreach($projects as $project)
                 <tr> 
                   <td>{{$no++}} </td>
-                  <td>{{$projects->name}}</td>
-                  <td>{{$projects->url}}</td>
-                  <td>{{$projects->start_date}}</td>
-                  <td>{{$projects->status }} </td>
+                  <td>{{$project->name}}</td>
+                  <td>{{$project->url}}</td>
+                  <td>{{$project->start_date}}</td>
+                  <td>{{$project->statuses->name}}</td>
                   <td>  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default">
                       Delete
                       </button>
-                      </form> </td> <td> <form action="{{route('project.edit', $projects->id)}}">
+                      </form> </td> <td> <form action="{{route('project.edit', $project->id)}}">
                       <button class="btn btn-success" type="submit" value="Edit"> Edit </button> </form>  </td> <td> 
-                      <form action="{{route('project.show', $projects->id)}}" method="GET">
+                      <form action="{{route('project.show', $project->id)}}" method="GET">
                       <button class="btn btn-success" type="submit" value="Edit"> Detail </button> </form> </td>
 
                 </tr>
@@ -49,7 +49,7 @@
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                              <form action="{{route('project.destroy', $projects->id)}}" method="POST">
+                              <form action="{{route('project.destroy', $project->id)}}" method="POST">
                                 {{csrf_field()}}
                                 {{method_field('DELETE')}}
                                 <button class="btn btn-success" type="submit" value="Delete"> Delete
