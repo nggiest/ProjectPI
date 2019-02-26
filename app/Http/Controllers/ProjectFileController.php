@@ -31,7 +31,8 @@ class ProjectFileController extends Controller
     {
         $project = Project::all();
         $projectfile = ProjectFile::all();
-        return view('projectfiles.create', compact ('project','projectfile'));
+       
+        return view('projectfiles.create', compact ('project','projectfile','pfsid'));
     }
 
     /**
@@ -65,6 +66,7 @@ class ProjectFileController extends Controller
             'project_id' => $request->project_id,
             'upload_by' => $request->upload_by,
             'project_id' => $request->input('project_idx'),
+            'related_by' => $request->related_by,
         ]);
         
         
@@ -93,8 +95,8 @@ class ProjectFileController extends Controller
     public function edit($id)
     {
         $project= Project::all();
-        $projectfile = ProjectFile::all();
-        return view('projectfiles.edit', compact('projectfile','project'));
+        $projectfiles = ProjectFile::all();
+        return view('projectfiles.edit', compact('projectfiles','project'));
     }
 
     /**
@@ -111,11 +113,12 @@ class ProjectFileController extends Controller
         $extension =  $uploadedFile->getClientOriginalExtension();
         $filename = Uuid::generate(4).'.'.$extension;
         $file = ProjectFile::update([
-            'name' => $request->name,
+            'name' => $request->input('document_name'),
             'filename' => $filename,
             'description' => $request->description,
             'project_id' => $request->project_id,
             'upload_by' => $request->upload_by,
+            'related_by' => $request->related_by,
 
           
         ]);

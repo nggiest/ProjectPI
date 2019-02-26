@@ -11,20 +11,20 @@ class ReportActivity extends Model
     protected $fillable = [
         'project_id','report_id','module','activity','priority', 'status',
     ];
-    public function report(){
-        return $this->belongsTo(Report::class);
+    public function reports(){
+        return $this->belongsTo(Report::class,'report_id');
     }
 
-    public function project(){
-        return $this->belongsTo(Project::class);
+    public function projects(){
+        return $this->belongsTo(Project::class,'project_id');
     }
 
-    public function priority(){
-        return $this->belongsTo(MDPriority::class);
+    public function priorities(){
+        return $this->belongsTo(MDPriority::class,'priority');
     }
 
-    public function status(){
-        return $this->belongsTo(MDStatus::class);
+    public function statuses(){
+        return $this->belongsTo(MDStatus::class,'status');
     }
 
 }

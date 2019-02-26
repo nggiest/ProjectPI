@@ -66,7 +66,7 @@ class ReportActivityController extends Controller
      */
     public function edit($id)
     {
-        //
+       
     }
 
     /**

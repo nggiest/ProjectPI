@@ -32,10 +32,10 @@
               
               <div class="form-group">
                   <label for="RevisionFor">Revision For</label>
-                  <br>
                     <select name="related_to" id="related_to">
+                    <option name="related_to" id="related_to" value=""> </option>
                     @foreach($projectfile as $pfs)
-                        <option name="related_to" id="related_to" value="{{$data = $pfs->id}}">{{$pfs->name}} </option>
+                        <option name="related_to" id="related_to" value="{{$data = $pfs->id }}">{{$pfs->name }} </option>
                      @endforeach
                     </select>
               

@@ -11,7 +11,7 @@ class ProjectFile extends Model
         'name', 'description', 'filename','upload_by', 'project_id',
     ];
 
-    public function project()
+    public function projectsid()
     {
         return $this->belongsTo(Project::class);
     }

@@ -21,8 +21,14 @@ class ReportController extends Controller
     public function index()
     {
        $report = Report::all();
-       $reportcount = DB::table('reportactivity')->select(DB::Raw('count(report_id) as countId'))->groupBy('report_id')->get();
-       return view('reports.index', compact ('report','reportcount'));
+       //    $reportcount = ReportActivity::selectRaw('count(report_id)')->groupBy('report_id')->where('report_id', $reports->id)->first(); 
+       foreach ($report as $reports) {
+            $reports->repact = ReportActivity::where('report_id',$reports->id)->get();
+            // $reports->repact = ReportActivity::all();
+            $reports->reportcount = DB::table('reportactivity')->select(DB::Raw('count(report_id) as countId'))->groupBy('report_id')->where('report_id', $reports->id)->first(); 
+       }
+    //    return $report;
+       return view('reports.index', compact ('report'));
         
     
     }
@@ -38,6 +44,7 @@ class ReportController extends Controller
         $project=Project::all();
         $priority = MDPriority::all();
         $status = MDStatus::all();
+
         return view('reports.create', compact('priority','status', 'project'));
     }
 
@@ -105,7 +112,13 @@ class ReportController extends Controller
      */
     public function edit($id)
     {
-        //
+        $reports = Report::all();
+        $reportactivity = ReportActivity::select('*')->where('project_id', $id)->first();
+        $priority = MDPriority::all();
+        $status = MDStatus::all();
+        dd($reports);
+
+        return view('reports.edit', compact('reports','reportactivity','priority','status'));
     }
 
     /**

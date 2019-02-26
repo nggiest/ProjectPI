@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="box box-primary">
-            <div class="box-title"> <h1 style="text-align:center"> {{$project -> name}} <span class="label label-success">{{$project->status}}</span> </h3> </div>
+            <div class="box-title"> <h1 style="text-align:center"> {{$project -> name}} <span class="label label-success"> {{$project->statuses->name}} </span> </h3> </div>
             <h4 style="text-align:center"> {{$project->description}} </h2>
 
           <!-- Custom Tabs -->
@@ -66,13 +66,13 @@
                       <td>{{$no1++}}</td>
                       <td>{{$projectfiles->name}}</td>
                       <td>{{$projectfiles->description}}</td>
-                      <td><a href="{{url('/storage/files').'/'.$projectfiles->filename}}" download="{{$projectfiles->filename}}" > <i class="fa fa-download" style="text-align:center"></i> </a> </td>
+                      <td><form action="{{url('/storage/files').'/'.$projectfiles->filename}}" download="{{$projectfiles->filename}}"> <button class="btn btn-success"> <i class="fa fa-download" style="text-align:center"></i> </button> </form> </td>
                       <td><form action="{{route('document.destroy', $projectfiles->id)}}" method="POST">
                       {{csrf_field()}}
                       {{method_field('DELETE')}}
                       <button class="btn btn-success" type="submit"> <i class="fa fa-trash" style="text-align:center"> </i> 
                       </button> </form> </td>
-                      <td><a href="{{route('document.edit', $projectfiles->id)}}"><i class="fa fa-pencil" style="text-align:center"></i></a> </td>
+                      <td><form action="{{route('document.edit', $projectfiles->id)}}"><button class="btn btn-success"> <i class="fa fa-pencil" style="text-align:center"></i></button></form> </td>
                           
                     </tr>
                       @endforeach

@@ -14,15 +14,15 @@
               <input type="hidden" name="upload_by" id="upload_by" value="{{Auth::user()->id}}">
                 <div class="form-group">
                   <label for="DocumentName">Document Name</label>
-                  <input type="text" class="form-control" id="name" name="name" value="{{ $projectfile->name}}">
+                  <input type="text" class="form-control" id="document_name" name="document_name" value="{{ $projectfiles->name}}">
                 </div>
                 <div class="form-group">
                   <label for="Description">Description</label>
-                  <input type="text" class="form-control" id="description" name="description" placeholder="Description" value="{{$projectfile->description}}">
+                  <input type="text" class="form-control" id="description" name="description" placeholder="Description" value="{{$projectfiles->description}}">
                 </div>
                 <div class="form-group">
                   <label for="exampleInputFile">Attach File</label>
-                  <input type="file" id="file" name='file' value="{{$projectfile->filename}}">
+                  <input type="file" id="file" name='file' value="{{$projectfiles->filename}}">
                 </div>
               </div>
 
@@ -41,7 +41,7 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Update</button>
               </div>
             </form>
           </div>
