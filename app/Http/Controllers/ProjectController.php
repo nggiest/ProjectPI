@@ -8,6 +8,7 @@ use App\MDStatus;
 use App\ProjectFile;
 use App\ProjectMember;
 use App\ReportActivity;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -22,7 +23,11 @@ class ProjectController extends Controller
     public function index()
     {
         $user=User::all();
-        $projects=Project::all();
+        $projects=DB::table('projects')
+                ->join('projects','projects.id','=','project_member','project_member.project_id')
+                ->select('projects.*')
+                ->where('project_member.user_id', Auth::user()->id)
+                ->get();
         
         return view('projects.index', compact('projects'));
     }
@@ -121,7 +126,7 @@ class ProjectController extends Controller
 
         // return $project;
 
-        return view('projects.edit', compact('project','status','user','projectmember','statusid'));
+        return view('projects.edit', compact('project','status','user','projectmember'));
     }
 
     /**
@@ -148,7 +153,7 @@ class ProjectController extends Controller
         $newProjectMember = $request->user_id;
         
         $oldProjectMember = [];
-        foreach (ProjectMember::where('project_id', 26)->get() as $member) {
+        foreach (ProjectMember::where('project_id', $id)->get() as $member) {
             array_push($oldProjectMember, $member->user_id);
         } 
 
@@ -193,31 +198,35 @@ class ProjectController extends Controller
     public function destroy($id)
     {
         $project = Project::findOrFail($id);
-        if (ProjectMember::where('project_id', '=', Input::get('id'))->exists())
+       
+
+        if (ProjectFile::where('project_id', $id)->exists())
         {
-            $projectmember = ProjectMember::all();
-            $projectmemberid = $projectmember->project_id;
-            foreach ($projectmemberid as $pmid ){
+            $projectmember = ProjectMember::select('*')->where('project_id', $id)->get();
+            // $projectmemberid = $projectmember->project_id;
+            foreach ($projectmember as $pmid ){
                 $pmid->delete();
             }
            
         }
         
-        if (ProjectFile::where('project_id', '=', Input::get('id'))->exists()){
+        if (ProjectFile::where('project_id', $id)->exists()){
+        // if ($projectfile->exists()){
 
-            $projectfile = ProjectFile::all();
-            $projectfileid = $projectfile->project_id;
-            foreach($projectfiledid as $pfid){
+            $projectfile = ProjectFile::select('*')->where('project_id', $id)->get();
+            // $projectfileid = $projectfile->project_id;
+            foreach($projectfile as $pfid){
                 $pfid->delete();
             }
             
         }
 
-        if (ReportActivity::where('project_id', '=', Input::get('id'))->exists()){
-
-            $reportactivity = ReportActivity::all();
-            $reportactivityid = $reportactivityid->project;
-            foreach($reportactivityid as $raid){
+        if (ReportActivity::where('project_id', $id)->exists()){
+        // if ($reportactivity->exists()){
+        
+            $reportactivity = ReportActivity::select('*')->where('project_id', $id)->get();
+            // $reportactivityid = $reportactivity->project;
+            foreach($reportactivity as $raid){
                 $raid->delete();
             }
             

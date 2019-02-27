@@ -56,6 +56,7 @@ class ReportActivityController extends Controller
     public function show($id)
     {
         //
+
     }
 
     /**

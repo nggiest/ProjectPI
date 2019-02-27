@@ -11,6 +11,7 @@ use App\Project;
 use App\MDStatus;
 use Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 class ReportController extends Controller
 {
     /**
@@ -20,8 +21,9 @@ class ReportController extends Controller
      */
     public function index()
     {
-       $report = Report::all();
+       $report = Report::select('*')->where('user', Auth::user()->id)->get();
        //    $reportcount = ReportActivity::selectRaw('count(report_id)')->groupBy('report_id')->where('report_id', $reports->id)->first(); 
+
        foreach ($report as $reports) {
             $reports->repact = ReportActivity::where('report_id',$reports->id)->get();
             // $reports->repact = ReportActivity::all();
@@ -86,7 +88,7 @@ class ReportController extends Controller
 
        
 
-            return redirect('/daily/create')->with('status', 'Success');
+            return redirect('/daily')->with('status', 'Success');
     //    }
     //    return $data;    
 
@@ -112,13 +114,14 @@ class ReportController extends Controller
      */
     public function edit($id)
     {
-        $reports = Report::all();
-        $reportactivity = ReportActivity::select('*')->where('project_id', $id)->first();
+        $reports = Report::findOrFail($id);
+        $reportactivity = ReportActivity::where('report_id', $id)->get();
         $priority = MDPriority::all();
+        $projects = Project::all();
         $status = MDStatus::all();
-        dd($reports);
+        // dd($reports);
 
-        return view('reports.edit', compact('reports','reportactivity','priority','status'));
+        return view('reports.edit', compact('reports','reportactivity','priority','status','projects'));
     }
 
     /**
@@ -141,12 +144,36 @@ class ReportController extends Controller
      */
     public function destroy($id)
     {
-        //p
+        $report = Report::findOrFail($id);
+        if (ReportActivity::where('report_id',$id)->exists()){
+
+            $reportactivity = ReportActivity::select('*')->where('report_id',$id)->get();;
+            // $reportactivityid = $reportactivityid->reports_id;
+            foreach($reportactivity as $raid){
+                $raid->delete();
+            }
+            
+        }
+
+        $report->delete();
+        
+        return redirect()->route('daily.index');
     }
 
 
-    public function help($id)
+    public function getData($id)
     {
+        $report = Report::findOrFail($id);
+        $report->repact = ReportActivity::where('report_id',$id)->get();
+        $obj = $report->repact;
+        foreach($obj as $objs) {
+            $objs->priority = $objs->priorities->priority;
+            $objs->status = $objs->statuses->name;
+            $objs->project_id = $objs->projects->name;
+        }
+        return json_encode($obj);
+        // $report = Report::findOrFail($id);
+        // $reportactivity = ReportActivity::where('report_id',$id)->get();
 
     }
 }

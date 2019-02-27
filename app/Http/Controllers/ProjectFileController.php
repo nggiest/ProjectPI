@@ -30,9 +30,9 @@ class ProjectFileController extends Controller
     public function create()
     {
         $project = Project::all();
-        $projectfile = ProjectFile::all();
+        $projectfile = ProjectFile::where('project_id', Input::get('project_id'))->get();
        
-        return view('projectfiles.create', compact ('project','projectfile','pfsid'));
+        return view('projectfiles.create', compact ('project','projectfile'));
     }
 
     /**
@@ -95,7 +95,7 @@ class ProjectFileController extends Controller
     public function edit($id)
     {
         $project= Project::all();
-        $projectfiles = ProjectFile::all();
+        $projectfiles = ProjectFile::findOrFail($id);
         return view('projectfiles.edit', compact('projectfiles','project'));
     }
 

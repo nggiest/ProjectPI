@@ -30,8 +30,8 @@
                   <label for="RevisionFor">Revision For</label>
                   <br>
                     <select name="related_to" id="related_to">
-                    @foreach($projectfile as $pfs)
-                        <option name="related_to" id="related_to" value="{{$data = $pfs->id}}" {{ $pfs->id  == $pfs->related_by ? 'selected' : '' }} >{{$pfs->name}} </option>
+                    @foreach($projectfiles as $pfs)
+                        <option name="related_to" id="related_to" value="{{$pfs->id}}" {{ $pfs->id  == $pfs->related_by ? 'selected' : '' }} >{{$pfs->name}} </option>
                      @endforeach
                     </select>
               
