@@ -29,21 +29,30 @@
                   <td>{{$reports->date}}</td>
                   <td>{{$reports->reportcount->countId}}</td>
                   <td> 
-                      <button class="btn btn-success view-report" type="button" data-toggle="modal" data-target="#modal-report" onClick="view_report({{$reports->id}})">
-                      <i class="fa fa-fw fa-eye"> </i> Read
-                      </button> </td> <td>
-                      
+
+                    <button class="btn btn-success view-report" type="button" data-toggle="modal" data-target="#modal-report" onClick="view_report({{$reports->id}})">
+                    <i class="fa fa-fw fa-eye"> </i> Read
+                    </button> 
+                  </td> 
+                  <td>
                       <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-delete">
                         <i class="fa fa-trash"> Delete </i>
-                      </button></td> <td>
-
-                      <form action="{{route('daily.edit', $reports->id)}}">
-                      <button type="submit" class="btn btn-success" >
-                        <i class="fa fa-pencil"> Edit </i>
                       </button>
-                      </form>
-                      <div class="modal fade" id="modal-delete">
-                    <div class="modal-dialog">
+                  </td> 
+                  <td>
+                     
+                        <form action="{{route('daily.edit', $reports->id)}}">
+                          <button type="submit" class="btn btn-success" value="Edit">
+                          <i class="fa fa-pencil"> Edit </i>
+                          </button>
+                        </form>
+                  </td>
+                    </tr>
+                      
+                      <!-- /.modal-dialog -->
+                </div> 
+                <div class="modal fade" id="modal-delete">
+                        <div class="modal-dialog">
                             <div class="modal-content">
                               <div class="modal-header">
                                 <h4 class="modal-title">SPM File Management</h4>
@@ -60,14 +69,12 @@
                                   {{method_field('DELETE')}}
                                   <button class="btn btn-success" type="submit" value="Delete"> Delete
                                 </button>
+                                </form>
                               </div>
                             </div>
                             <!-- /.modal-content -->
-                    </div>
-                      <!-- /.modal-dialog -->
-                </div> 
-                   </td>
-                </tr>
+                  </div>
+                  
                 @endforeach
                   </tbody>
                 </table>
@@ -78,7 +85,7 @@
                         <div class="modal-header">
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span></button>
-                          <h4 class="modal-title"> Report {{$reports->date}} </h4>
+                          <h4 class="modal-title tanggal"> Report </h4>
                         </div>
                         <div class="modal-body">
                             <table id="activity" class="table ">
@@ -110,6 +117,8 @@
                     </div>
                     <!-- /.modal-dialog -->
                 </div>
+
+                
                
                
 </div>
@@ -133,7 +142,7 @@
 
 <script type="text/javascript">
 
-var no = 1;
+var no = 1 ;
 
 
           function view_report(reportId) {
@@ -149,7 +158,7 @@ var no = 1;
                     console.log(data);
                     $("#activityx").empty();
                     $.each(data,function(key,value){
-                      $("#activityx").append('<tr><td>'+no+'</td><td>'+value.activity+'</td><td>'+value.project_id+'</td><td>'+value.module+'</td><td>'+value.priority+'</td><td>'+value.status+'</td></tr>');
+                      $("#activityx").append('<tr><td>'+value.id+'</td><td>'+value.activity+'</td><td>'+value.project_id+'</td><td>'+value.module+'</td><td>'+value.priority+'</td><td>'+value.status+'</td></tr>');
                     });
                   }
             });

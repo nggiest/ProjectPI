@@ -43,11 +43,15 @@ class ReportController extends Controller
     public function create()
     {
         $report=Report::all();
-        $project=Project::all();
+        $project=DB::table('projects')
+                    ->join('project_member', 'project_member.project_id', '=', 'projects.id')
+                    ->select('projects.*')
+                    ->where('project_member.user_id', Auth::user()->id )
+                    ->get();
         $priority = MDPriority::all();
         $status = MDStatus::all();
 
-        return view('reports.create', compact('priority','status', 'project'));
+        return view('reports.create', compact('priority','status', 'project','report'));
     }
 
     /**
@@ -88,7 +92,7 @@ class ReportController extends Controller
 
        
 
-            return redirect('/daily')->with('status', 'Success');
+            return redirect('/daily')->with('alert', 'Success');
     //    }
     //    return $data;    
 
@@ -115,12 +119,16 @@ class ReportController extends Controller
     public function edit($id)
     {
         $reports = Report::findOrFail($id);
-        $reportactivity = ReportActivity::where('report_id', $id)->get();
+        $reportactivity = ReportActivity::select('*')->where('report_id', $id)->get();
         $priority = MDPriority::all();
-        $projects = Project::all();
+        $projects=DB::table('projects')
+                    ->join('project_member', 'project_member.project_id', '=', 'projects.id')
+                    ->select('projects.id as id','projects.name as name')
+                    ->where('project_member.user_id', Auth::user()->id )
+                    ->get();
         $status = MDStatus::all();
         // dd($reports);
-
+        // dd($projects);
         return view('reports.edit', compact('reports','reportactivity','priority','status','projects'));
     }
 
@@ -133,7 +141,58 @@ class ReportController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // dd($request);
+        DB::beginTransaction();
+
+            try {
+                
+                $report = Report::findOrFail($id);
+                $reportactivity = ReportActivity::where('report_id',$id)->get();
+                
+                $newReportActivity = $request['activities'];
+        
+                $oldReportActivity = [$reportactivity];
+
+                dd($newReportActivity);
+                $data = [];
+                foreach (ReportActivity::where('report_id', $id)->get() as $reportactivity) {
+                    array_push($oldReportActivity, $reportactivity->report_id);
+                } 
+        
+                // return [$newProjectMember, $oldProjectMember];
+        
+                foreach($request['activities'] as $repact) {
+                    if(!in_array($repact, $oldReportActivity)) { 
+                         array_push($data, 
+                                [
+                                    'project_id' => $repact['project_id'],
+                                    'report_id' => $id,
+                                    'module' => $repact['module'],
+                                    'activity' =>  $repact['activity'],
+                                    'priority' => $repact['priority'],
+                                    'status' => $repact['status']
+                                ]
+                            );
+                         ReportActivity::insert($data);
+                        }  
+                        
+                    }
+         
+                foreach($oldReportActivity as $reportact) {
+                    if(!in_array($reportact, $newReportActivity)) { 
+                        $reportact->delete();
+                    }
+                } 
+                
+               
+                DB::commit();    // Commiting  ==> There is no problem whatsoever
+            } catch (Exception $e) {
+                DB::rollback();   // rollbacking  ==> Something went wrong
+            }
+
+           
+
+            return redirect('/daily')->with('status', 'Success');
     }
 
     /**
@@ -166,10 +225,12 @@ class ReportController extends Controller
         $report = Report::findOrFail($id);
         $report->repact = ReportActivity::where('report_id',$id)->get();
         $obj = $report->repact;
+        $no = 1;
         foreach($obj as $objs) {
             $objs->priority = $objs->priorities->priority;
             $objs->status = $objs->statuses->name;
             $objs->project_id = $objs->projects->name;
+            $objs->id = $no++;
         }
         return json_encode($obj);
         // $report = Report::findOrFail($id);

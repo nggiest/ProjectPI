@@ -7,7 +7,7 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form role="form" method="post" action="{{route('document.store')}}"  enctype="multipart/form-data">
+            <form role="form" method="POST" action="{{route('document.update', $projectfiles->id )}}"  enctype="multipart/form-data">
             {{ method_field('PUT') }}
             {{ csrf_field() }}
             <div class="box-body">
@@ -28,11 +28,11 @@
 
               <div class="form-group">
                   <label for="RevisionFor">Revision For</label>
-                  <br>
-                    <select name="related_to" id="related_to">
-                    @foreach($projectfiles as $pfs)
-                        <option name="related_to" id="related_to" value="{{$pfs->id}}" {{ $pfs->id  == $pfs->related_by ? 'selected' : '' }} >{{$pfs->name}} </option>
-                     @endforeach
+                 
+                    <select name="related_by" id="related_by">
+                        @foreach($projectfiles as $pfs)
+                        <option name="related_by" id="related_by" value="{{$projectfiles->id}}" {{ $projectfiles->id  == $pfs->related_by ? 'selected' : '' }} >{{$pfs->name}} </option>
+                        @endforeach
                     </select>
               
               </div>

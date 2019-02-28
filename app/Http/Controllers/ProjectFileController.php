@@ -7,7 +7,9 @@ use App\ProjectFile;
 use App\Project;
 use App\User;
 use Alert;
+use Auth;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\DB;
 use Webpatser\Uuid\Uuid;
 
 class ProjectFileController extends Controller
@@ -94,8 +96,14 @@ class ProjectFileController extends Controller
      */
     public function edit($id)
     {
-        $project= Project::all();
         $projectfiles = ProjectFile::findOrFail($id);
+        $project=DB::table('projects')
+                    ->join('project_member', 'project_member.project_id', '=', 'projects.id')
+                    ->join('md_status','md_status.id','=','projects.status')
+                    ->select('projects.*','md_status.name as status')
+                    ->where('project_member.user_id', Auth::user()->id )
+                    ->get();
+        
         return view('projectfiles.edit', compact('projectfiles','project'));
     }
 
@@ -108,6 +116,14 @@ class ProjectFileController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'name' => 'required|max:128',
+            'file' => 'required|file|mimes:docx,doc,pdf,odt',
+            'description' => 'required |max:128',
+            
+        ]);
+        
+        
         $uploadedFile = $request->file('file');
         $destinationPath = ('public/files');   
         $extension =  $uploadedFile->getClientOriginalExtension();

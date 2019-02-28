@@ -26,7 +26,7 @@
                   <td>{{$project->name}}</td>
                   <td>{{$project->url}}</td>
                   <td>{{$project->start_date}}</td>
-                  <td>{{$project->statuses->name}}</td>
+                  <td>{{$project->status}}</td>
                   <td>  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default">
                       Delete
                       </button>

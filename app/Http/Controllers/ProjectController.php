@@ -24,12 +24,14 @@ class ProjectController extends Controller
     {
         $user=User::all();
         $projects=DB::table('projects')
-                ->join('projects','projects.id','=','project_member','project_member.project_id')
-                ->select('projects.*')
-                ->where('project_member.user_id', Auth::user()->id)
-                ->get();
+                    ->join('project_member', 'project_member.project_id', '=', 'projects.id')
+                    ->join('md_status','md_status.id','=','projects.status')
+                    ->select('projects.*','md_status.name as status')
+                    ->where('project_member.user_id', Auth::user()->id )
+                    ->get();
+        $projectstatus = Project::all();
         
-        return view('projects.index', compact('projects'));
+        return view('projects.index', compact('projects','projectstatus'));
     }
 
     /**
@@ -149,6 +151,8 @@ class ProjectController extends Controller
         ]);
         
         $project = Project::findOrFail($id);
+        $project->update($request->all());
+
         $User = User::All();
         $newProjectMember = $request->user_id;
         
@@ -171,20 +175,7 @@ class ProjectController extends Controller
             if(!in_array($projectmember, $newProjectMember)) { 
                 ProjectMember::where('user_id', $projectmember)->where('project_id', $id)->delete();
             }
-        }
-
-        // foreach($request->user_id as $projectmember) {
-        //     if(ProjectMember::where('user_id',$request->user_id)->where('project_id', $id)->count() == 0 ){
-                
-        //         ProjectMember::create([
-        //             'user_id' => $projectmember,
-        //             'project_id' => $project->id
-        //             ]);
-        //     }
-        // }
-
-
-        
+        }        
         return redirect()->route('project.index');
 
     }
