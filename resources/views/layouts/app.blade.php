@@ -86,7 +86,7 @@
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="{{route('user.edit', Auth::user()->id )}}" class="btn btn-default btn-flat">Change Password</a>
+                  <a href="{{route('user.change', Auth::user()->id )}}" class="btn btn-default btn-flat">Change Password</a>
                 </div>
                 <div class="pull-right">
                  <a href="{{ route('logout') }}" class="btn btn-default btn-flat"
@@ -97,6 +97,7 @@
                   <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
                                         </form>
+                              
                 </div>
               </li>
             </ul>

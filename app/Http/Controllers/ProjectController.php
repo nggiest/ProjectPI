@@ -23,15 +23,22 @@ class ProjectController extends Controller
     public function index()
     {
         $user=User::all();
-        $projects=DB::table('projects')
+        if(Auth::user()->role == 'Admin') {
+            $projects= $projects=DB::table('projects')
+            ->join('md_status','md_status.id','=','projects.status')
+            ->select('projects.*','md_status.name as status')
+            ->get();
+        }
+        else{ 
+            $projects=DB::table('projects')
                     ->join('project_member', 'project_member.project_id', '=', 'projects.id')
                     ->join('md_status','md_status.id','=','projects.status')
                     ->select('projects.*','md_status.name as status')
                     ->where('project_member.user_id', Auth::user()->id )
                     ->get();
-        $projectstatus = Project::all();
-        
-        return view('projects.index', compact('projects','projectstatus'));
+            $projectstatus = Project::all();
+        }
+        return view('projects.index', compact('projects'));
     }
 
     /**
@@ -176,7 +183,7 @@ class ProjectController extends Controller
                 ProjectMember::where('user_id', $projectmember)->where('project_id', $id)->delete();
             }
         }        
-        return redirect()->route('project.index');
+        return redirect()->route('project.show', $id);
 
     }
 

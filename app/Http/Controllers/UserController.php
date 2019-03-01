@@ -7,6 +7,7 @@ use App\Report;
 use App\MDStatus;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Alert;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -74,7 +75,8 @@ class UserController extends Controller
             'password' => bcrypt($request['password']),
             'role' => $request['role'],
         ]);
-
+        
+        Alert::success('User Successfully Added', 'Success');
         return redirect()->route('user.index');
     }
 
@@ -145,7 +147,25 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        
+        Alert::success('Deleted Success', 'Success');
         return redirect()->route('user.index');
+    }
+
+    public function changepassword($id)
+    {
+        $user = User::findOrFail($id);
+        return view('users.changepassword', compact('user'));
+
+    }
+
+    public function gantipwd(Request $request, $id){
+        $user = User::findOrFail($id);
+        $user->update([
+            'password' => bcrypt($request['password']),
+        ]);
+        // dd($request);
+        
+        return redirect()->route('home');
+
     }
 }

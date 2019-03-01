@@ -56,7 +56,6 @@ class ProjectFileController extends Controller
         // dd($request);
        
         $project = Project::all();
-        // $projectid = Input::get('project_id');
         $uploadedFile = $request->file('file');
         $destinationPath = ('public/files');   
         $extension =  $uploadedFile->getClientOriginalExtension();
@@ -65,16 +64,15 @@ class ProjectFileController extends Controller
             'name' => $request->name,
             'filename' => $filename,
             'description' => $request->description,
-            'project_id' => $request->project_id,
             'upload_by' => $request->upload_by,
             'project_id' => $request->input('project_idx'),
             'related_by' => $request->related_by,
         ]);
-        
-        
+       
+        // dd($request);
         $uploadedFile->storeAs($destinationPath,$filename);
-        Alert::message('Document added successfully');
-        return redirect()->route('project.show',$request->project_id);
+        // Alert::message('Document added successfully');
+        return redirect()->route('project.show', $request->input('project_idx'));
     }
 
     /**
@@ -97,14 +95,10 @@ class ProjectFileController extends Controller
     public function edit($id)
     {
         $projectfiles = ProjectFile::findOrFail($id);
-        $project=DB::table('projects')
-                    ->join('project_member', 'project_member.project_id', '=', 'projects.id')
-                    ->join('md_status','md_status.id','=','projects.status')
-                    ->select('projects.*','md_status.name as status')
-                    ->where('project_member.user_id', Auth::user()->id )
-                    ->get();
-        
-        return view('projectfiles.edit', compact('projectfiles','project'));
+
+        $projfiles = ProjectFile::where('project_id', $projectfiles->project_id)->get();
+        // return $projectfiles;
+        return view('projectfiles.edit', compact('projectfiles','projfiles'));
     }
 
     /**
@@ -132,7 +126,7 @@ class ProjectFileController extends Controller
             'name' => $request->input('document_name'),
             'filename' => $filename,
             'description' => $request->description,
-            'project_id' => $request->project_id,
+            'project_id' => $request->input('project_idx'),
             'upload_by' => $request->upload_by,
             'related_by' => $request->related_by,
 
@@ -142,10 +136,8 @@ class ProjectFileController extends Controller
         
         $uploadedFile->storeAs($destinationPath,$filename);
         Alert::message('Document update successfully');
-        return redirect()->route('project.show',$request->project_id);
-
-
-
+        return redirect()->route('project.show', $request->input('project_idx'));
+        
     }
 
     /**

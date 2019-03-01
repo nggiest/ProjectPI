@@ -67,14 +67,36 @@
                       <td>{{$projectfiles->name}}</td>
                       <td>{{$projectfiles->description}}</td>
                       <td><form action="{{url('/storage/files').'/'.$projectfiles->filename}}" download="{{$projectfiles->filename}}"> <button class="btn btn-success"> <i class="fa fa-download" style="text-align:center"></i> </button> </form> </td>
-                      <td><form action="{{route('document.destroy', $projectfiles->id)}}" method="POST">
-                      {{csrf_field()}}
-                      {{method_field('DELETE')}}
-                      <button class="btn btn-success" type="submit"> <i class="fa fa-trash" style="text-align:center"> </i> 
-                      </button> </form> </td>
-                      <td><form action="{{route('document.edit', $projectfiles->id)}}"><button class="btn btn-success"> <i class="fa fa-pencil" style="text-align:center"></i></button></form> </td>
+                      <td>
+                      <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal-delete"> <i class="fa fa-trash" style="text-align:center"> </i> 
+                      </button> </td>
+                      <td><form action="{{route('document.edit', $projectfiles->id)}}">
+            
+                      <button class="btn btn-success"> <i class="fa fa-pencil" style="text-align:center"></i></button></form> </td>
                           
-                    </tr>
+                      </tr>
+                      <div class="modal fade" id="modal-delete">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">SPM Management File</h4>
+                              </div>
+                              <div class="modal-body">
+                                <h3 style="text-align:center"> Are you sure ? </h3>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                                <form action="{{route('document.destroy', $projectfiles->id)}}" method="POST">
+                                {{csrf_field()}}
+                                {{method_field('DELETE')}}
+                                <button class="btn btn-success" type="submit" value="Delete"> Delete </button>
+                                </form>
+                                          
+                              </div>
+                          </div>
+                      </div>
                       @endforeach
                     </tbody>
                     </table>

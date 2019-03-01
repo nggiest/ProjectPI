@@ -11,6 +11,7 @@
             {{ method_field('PUT') }}
             {{ csrf_field() }}
             <div class="box-body">
+            <input type="hidden" name="project_idx" id="project_idx" value="{{request()->project_id}}">
               <input type="hidden" name="upload_by" id="upload_by" value="{{Auth::user()->id}}">
                 <div class="form-group">
                   <label for="DocumentName">Document Name</label>
@@ -30,15 +31,13 @@
                   <label for="RevisionFor">Revision For</label>
                  
                     <select name="related_by" id="related_by">
-                        @foreach($projectfiles as $pfs)
-                        <option name="related_by" id="related_by" value="{{$projectfiles->id}}" {{ $projectfiles->id  == $pfs->related_by ? 'selected' : '' }} >{{$pfs->name}} </option>
+                    <option value="">--Select Revision--</option>
+                        @foreach($projfiles as $pro)
+                        <option name="related_by" id="related_by" value="{{$pro->id}}" {{ $pro->id  == $projectfiles->related_by ? 'selected' : '' }} >{{$pro->name}} </option>
                         @endforeach
                     </select>
               
               </div>
-             
-
-              <!-- /.box-body -->
 
               <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Update</button>

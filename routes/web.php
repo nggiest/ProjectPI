@@ -29,4 +29,6 @@ Route::resource('/daily', 'ReportController');
 Route::resource('/document', 'ProjectFileController');
 Route::post('/report','ReportActivityController@store')->name('report.save');
 Route::get('/daily/getDaily/{id}', 'ReportController@getData');
+Route::get('/user/cp/{id}', 'UserController@changepassword')->name('user.change');
+Route::match(['put', 'patch'], '/user/cp/{id}', 'UserController@gantipwd')->name('user.ganti');
 

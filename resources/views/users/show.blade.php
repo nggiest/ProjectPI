@@ -61,12 +61,13 @@
                                     <!-- /.modal-content -->
                                   </div>
                                   <!-- /.modal-dialog -->
-                                </div>
-                                  
+                                </div>   
               @endforeach
               </tbody>
             </table>
         </div>
     </div>
 </div>
+<script src="/pathto/js/sweetalert.js"></script>
+@include('sweet::alert')
 @endsection

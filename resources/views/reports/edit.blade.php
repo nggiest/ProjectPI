@@ -5,34 +5,34 @@
   <div class="row">
     <form id="giomales" method="POST" action="{{ route('daily.update', $reports->id)}}">
       {{ method_field('PUT') }}
+      {{ csrf_field() }}
        <div class="col-md-12">
             <div class="box box-primary">
                 <div class="panel-heading">Daily Report</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" >
-                        {{ csrf_field() }}
                         <input type="hidden" name="user" id="user" value="{{Auth::user()->id}}">
                         <div class="col-md-6">
                           <label> Date </label>
                                 <input id="date" type="date" class="form-control" name="date" value="{{$reports->date}}" disabled required>
                         </div> 
-                      
-                    </form>
                 </div>
             </div>
             <button type ="button" class="btn btn-success" id="btn1"> <i class="fa fa-plus-circle"> </i> Activities </button> <br> <br>
             <div id="box-activities">
               @foreach($reportactivity as $react )
-                <div class="box box-primary cloningan" id="myactivities">
-                
+                <div class="box box-primary cloningan" id="myactivities[]">
+               
                     <div class="box-header with-border">
                       <h3 class="box-title">My Report</h3>
                       <button class="btn btn-box-tool delbutton" type="button"><i class="fa fa-times"></i></button>
                     </div>
                     <div class="box-body" id="activitybox">
+                    
                         <div class="form-block">
                           <div class="form-group">
+                
                             <label for="Project">Project</label>
+                            <input type="hidden" class="ini" id="report_id" name ="report_id" value="{{$reports->id}}">
                             <select class="form-control ini" name="project_id">
                               @foreach($projects as $project)
                               <option name="project_id" id="project_id" value="{{$project->id}}" {{ $react->project_id  == $project->id ? 'selected' : '' }}>{{$project->name}}</option>

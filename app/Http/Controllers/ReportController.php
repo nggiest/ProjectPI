@@ -141,57 +141,39 @@ class ReportController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($request);
+        // return ($request);
         DB::beginTransaction();
 
             try {
                 
                 $report = Report::findOrFail($id);
-                $reportactivity = ReportActivity::where('report_id',$id)->get();
-                
-                $newReportActivity = $request['activities'];
+                $reportactivity = ReportActivity::select('project_id','report_id','module','activity','priority','status')->where('report_id',$id)->get();
         
-                $oldReportActivity = [$reportactivity];
+                $oldReportActivity = $reportactivity;
 
-                dd($newReportActivity);
                 $data = [];
-                foreach (ReportActivity::where('report_id', $id)->get() as $reportactivity) {
-                    array_push($oldReportActivity, $reportactivity->report_id);
+                foreach($oldReportActivity as $reportact) {
+                       ReportActivity::where('report_id',$id)->delete();
                 } 
-        
-                // return [$newProjectMember, $oldProjectMember];
-        
+                        
                 foreach($request['activities'] as $repact) {
-                    if(!in_array($repact, $oldReportActivity)) { 
                          array_push($data, 
                                 [
                                     'project_id' => $repact['project_id'],
-                                    'report_id' => $id,
+                                    'report_id' => $repact['report_id'],
                                     'module' => $repact['module'],
                                     'activity' =>  $repact['activity'],
                                     'priority' => $repact['priority'],
-                                    'status' => $repact['status']
+                                    'status' => $repact['status'],
                                 ]
                             );
-                         ReportActivity::insert($data);
-                        }  
-                        
-                    }
-         
-                foreach($oldReportActivity as $reportact) {
-                    if(!in_array($reportact, $newReportActivity)) { 
-                        $reportact->delete();
-                    }
-                } 
-                
-               
+                        } 
+                        ReportActivity::insert($data);
                 DB::commit();    // Commiting  ==> There is no problem whatsoever
             } catch (Exception $e) {
                 DB::rollback();   // rollbacking  ==> Something went wrong
             }
-
            
-
             return redirect('/daily')->with('status', 'Success');
     }
 

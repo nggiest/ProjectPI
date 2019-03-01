@@ -27,7 +27,7 @@
                 </div>
               </div>
 
-              <input type="hidden" name="project_id" id="project_id" value:"{{$project}}">
+              <!-- <input type="hidden" name="project_id" id="project_id" value:"{{$project}}"> -->
 
               
               <div class="form-group">
