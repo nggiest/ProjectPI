@@ -66,6 +66,7 @@
               </tbody>
             </table>
         </div>
+        {{$user->links()}}
     </div>
 </div>
 <script src="/pathto/js/sweetalert.js"></script>

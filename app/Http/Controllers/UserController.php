@@ -22,7 +22,7 @@ class UserController extends Controller
     public function index()
     {  
 
-        $user=User::all();
+        $user=User::paginate(10);
         if (Auth::check())
             {
                 return view('users.show', compact('user'));
@@ -133,6 +133,8 @@ class UserController extends Controller
         'role' => $request['role'],
         'status' => $request['status'],
         ]);
+
+        Alert::message('User updated successfully','Success');
         
         return redirect()->route('user.index');
     }
@@ -164,6 +166,8 @@ class UserController extends Controller
             'password' => bcrypt($request['password']),
         ]);
         // dd($request);
+        
+        Alert::message('Password changed successfully','Success');
         
         return redirect()->route('home');
 

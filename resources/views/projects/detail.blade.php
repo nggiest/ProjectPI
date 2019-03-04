@@ -71,8 +71,8 @@
                       <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal-delete"> <i class="fa fa-trash" style="text-align:center"> </i> 
                       </button> </td>
                       <td><form action="{{route('document.edit', $projectfiles->id)}}">
-            
-                      <button class="btn btn-success"> <i class="fa fa-pencil" style="text-align:center"></i></button></form> </td>
+                      <input type="hidden" name="project_id" id="project_id" value="{{$project->id}}">
+                      <button type="submit" class="btn btn-success"> <i class="fa fa-pencil" style="text-align:center"></i></button></form> </td>
                           
                       </tr>
                       <div class="modal fade" id="modal-delete">

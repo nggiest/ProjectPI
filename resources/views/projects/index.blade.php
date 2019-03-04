@@ -16,7 +16,11 @@
                   <th>Url</th>
                   <th>Start Date</th>
                   <th>Status</th>
+                  @if(Auth::user()->role == 'Admin')
                   <th colspan:2>Action</th>
+                  @else
+                  <th>Action</th>
+                  @endif
                 </tr>
               </thead>
               <tbody>
@@ -27,11 +31,12 @@
                   <td>{{$project->url}}</td>
                   <td>{{$project->start_date}}</td>
                   <td>{{$project->status}}</td>
+                  @if(Auth::user()->role == 'Admin')
                   <td>  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default">
                       Delete
-                      </button>
-                      </form> </td> <td> <form action="{{route('project.edit', $project->id)}}">
-                      <button class="btn btn-success" type="submit" value="Edit"> Edit </button> </form>  </td> <td> 
+                      </button> 
+                      </form> </td> <td>  <form action="{{route('project.edit', $project->id)}}">
+                      <button class="btn btn-success" type="submit" value="Edit"> Edit </button> </form> </td> <td>
                       <form action="{{route('project.show', $project->id)}}" method="GET">
                       <button class="btn btn-success" type="submit" value="Edit"> Detail </button> </form> </td>
 
@@ -60,6 +65,12 @@
                         </div>
                     <!-- /.modal-dialog -->
                       </div>
+                  @else
+                  <td>
+                      <form action="{{route('project.show', $project->id)}}" method="GET">
+                      <button class="btn btn-success" type="submit" value="Edit"> Detail </button> </form> </td>
+                  </tr>
+                  @endif
             @endforeach
             </tbody>
             </table>

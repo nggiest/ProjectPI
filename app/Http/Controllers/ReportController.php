@@ -10,6 +10,7 @@ use App\MDPriority;
 use App\Project;
 use App\MDStatus;
 use Auth;
+use Alert;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 class ReportController extends Controller
@@ -91,8 +92,9 @@ class ReportController extends Controller
             }
 
        
+            Alert::message('Report created successfully','Success');
 
-            return redirect('/daily')->with('alert', 'Success');
+            return redirect('/daily');
     //    }
     //    return $data;    
 
@@ -152,27 +154,28 @@ class ReportController extends Controller
                 $oldReportActivity = $reportactivity;
 
                 $data = [];
-                foreach($oldReportActivity as $reportact) {
-                       ReportActivity::where('report_id',$id)->delete();
-                } 
-                        
-                foreach($request['activities'] as $repact) {
-                         array_push($data, 
-                                [
-                                    'project_id' => $repact['project_id'],
-                                    'report_id' => $repact['report_id'],
-                                    'module' => $repact['module'],
-                                    'activity' =>  $repact['activity'],
-                                    'priority' => $repact['priority'],
-                                    'status' => $repact['status'],
-                                ]
-                            );
-                        } 
-                        ReportActivity::insert($data);
-                DB::commit();    // Commiting  ==> There is no problem whatsoever
-            } catch (Exception $e) {
+                    foreach($oldReportActivity as $reportact) {
+                        ReportActivity::where('report_id',$id)->delete();
+                    } 
+                            
+                    foreach($request['activities'] as $repact) {
+                            array_push($data, 
+                                    [
+                                        'project_id' => $repact['project_id'],
+                                        'report_id' => $repact['report_id'],
+                                        'module' => $repact['module'],
+                                        'activity' =>  $repact['activity'],
+                                        'priority' => $repact['priority'],
+                                        'status' => $repact['status'],
+                                    ]);
+                            } 
+                            ReportActivity::insert($data);
+                    DB::commit();    // Commiting  ==> There is no problem whatsoever
+            }
+             catch (Exception $e) {
                 DB::rollback();   // rollbacking  ==> Something went wrong
             }
+            Alert::message('Report update successfully','Success');
            
             return redirect('/daily')->with('status', 'Success');
     }
@@ -197,6 +200,7 @@ class ReportController extends Controller
         }
 
         $report->delete();
+        Alert::message('Report deleted successfully','Success');
         
         return redirect()->route('daily.index');
     }

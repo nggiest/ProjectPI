@@ -28,8 +28,7 @@
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="{{ asset('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
-
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -132,7 +131,7 @@
           </a>
           <ul class="treeview-menu">
             <li class="active"><a href="{{route('project.index')}}"><i class="fa fa-circle-o"></i> Show Project</a></li>
-            <li><a href="{{route('project.create')}}"><i class="fa fa-circle-o"></i> Upload Project</a></li>
+            <li><a href="{{route('project.create')}}"><i class="fa fa-circle-o"></i> Create Project</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -171,7 +170,6 @@
           </a>
           <ul class="treeview-menu">
             <li class="active"><a href="{{route('project.index')}}"><i class="fa fa-circle-o"></i> Show Project</a></li>
-            <li><a href="{{route('project.create')}}"><i class="fa fa-circle-o"></i> Upload Project</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -206,6 +204,8 @@
     <!-- Main content -->
     <section class="content">
       @yield('content')
+      @include('sweet::alert')
+
     </section>
     <!-- /.content -->
   </div>

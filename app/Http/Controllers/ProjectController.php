@@ -9,6 +9,7 @@ use App\ProjectFile;
 use App\ProjectMember;
 use App\ReportActivity;
 use Auth;
+use Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -51,7 +52,13 @@ class ProjectController extends Controller
         $status = MDStatus::all();
         $user=User::all();
         $project=Project::all();
-        return view('projects.create', compact('user','status','project'));
+        if(Auth::user()->role == 'Admin'){
+            
+            return view('projects.create', compact('user','status','project'));
+        }
+        else{
+            return redirect()->route('home');
+        }
     }
 
     /**
@@ -80,6 +87,8 @@ class ProjectController extends Controller
                 'project_id' => $project->id
                 ]);
         }
+
+        Alert::message('Project added successfully','Success');
        
         return redirect()->route('project.index');
         
@@ -182,7 +191,10 @@ class ProjectController extends Controller
             if(!in_array($projectmember, $newProjectMember)) { 
                 ProjectMember::where('user_id', $projectmember)->where('project_id', $id)->delete();
             }
-        }        
+        } 
+       
+       
+        Alert::message('Project update successfully','Success');
         return redirect()->route('project.show', $id);
 
     }
@@ -231,6 +243,8 @@ class ProjectController extends Controller
         }
 
         $project->delete();
+
+        Alert::message('Project deleted successfully','Success');
         
         return redirect()->route('project.index');
     }
