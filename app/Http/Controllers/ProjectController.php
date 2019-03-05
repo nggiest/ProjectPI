@@ -50,7 +50,7 @@ class ProjectController extends Controller
     public function create()
     {
         $status = MDStatus::all();
-        $user=User::all();
+        $user=User::where('status','=','Active User')->get();
         $project=Project::all();
         if(Auth::user()->role == 'Admin'){
             
@@ -109,6 +109,7 @@ class ProjectController extends Controller
         ->join('projects', 'projects.id', '=', 'project_member.project_id')
         ->select('users.name', 'users.email')
         ->where('project_member.project_id', $id)
+        ->where('users.status','Active User')
         ->get();
         $pff = ProjectFile::all();
         $projectfile = DB::table('project_file')->where('project_id',$id)->get();
@@ -131,7 +132,7 @@ class ProjectController extends Controller
     {
         $status = MDStatus::all();
         // $statusid = MDStatus::select('id');
-        $user=User::all();
+        $user=User::where('status','=','Active User')->get();
         $project=Project::findOrFail($id);
        
         $projectmember =  DB::table('project_member')->select('user_id as user_id')->where('project_id',$id)->get();

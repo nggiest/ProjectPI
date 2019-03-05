@@ -23,21 +23,24 @@
                 </div>
                 <div class="form-group">
                   <label for="exampleInputFile">Attach File</label>
-                  <input type="file" id="file" name='file' value="{{$file->filename}}">
+                  <input type="file" id="file" name='file' value="{{$file->filename}}" title="a">
+                  <label for="File"> {{$file->filename}} </label>
                 </div>
-              </div>
 
-              <div class="form-group">
+                <div class="form-group">
                   <label for="RevisionFor">Revision For</label>
                  
                     <select name="related_by" id="related_by">
-                    <option value="">--Select Revision--</option>
+                    <option name="related_by" id="related_by" value="">--Select Revision--</option>
                         @foreach($list as $pro)
-                        <option name="related_by" id="related_by" value="{{$pro->id}}"  related_by="{{$file->related_by}}" kikit='kikit' {{ $pro->id == $file->related_by ? 'selected' : '' }} >{{$pro->name}} </option>
+                        <option name="related_by" id="related_by" value="{{$pro->id}}"  related_by="{{$file->related_by}}" kikit='kikit' {{ $file->related_by ==  $pro->id  ? 'selected' : '' }} >{{$pro->name}} </option>
                         @endforeach
                     </select>
               
               </div>
+              </div>
+
+            
 
               <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Update</button>

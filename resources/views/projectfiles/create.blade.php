@@ -25,21 +25,23 @@
                   <label for="exampleInputFile">Attach File</label>
                   <input type="file" id="file" name='file'>
                 </div>
-              </div>
-
-              <!-- <input type="hidden" name="project_id" id="project_id" value:"{{$project}}"> -->
-
-              
-              <div class="form-group">
+                <div class="form-group">
                   <label for="RevisionFor">Revision For</label>
-                    <select name="related_to" id="related_to">
-                    <option name="related_to" id="related_to" value=""> </option>
+                  <br>
+                    <select name="related_by" id="related_by">
+                    <option name="related_by" id="related_by" value=""> --Select Revision-- </option>
                     @foreach($projectfile as $pfs)
-                        <option name="related_to" id="related_to" value="{{$data = $pfs->id }}">{{$pfs->name }} </option>
+                        <option name="related_by" id="related_by" value="{{$data = $pfs->id }}">{{$pfs->name }} </option>
                      @endforeach
                     </select>
               
               </div>
+            </div>
+
+              <!-- <input type="hidden" name="project_id" id="project_id" value:"{{$project}}"> -->
+
+              
+             
               <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
               </div>

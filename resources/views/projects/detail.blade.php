@@ -68,36 +68,38 @@
                       <td>{{$projectfiles->description}}</td>
                       <td><form action="{{url('/storage/files').'/'.$projectfiles->filename}}" download="{{$projectfiles->filename}}"> <button class="btn btn-success"> <i class="fa fa-download" style="text-align:center"></i> </button> </form> </td>
                       <td>
-                      <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal-delete"> <i class="fa fa-trash" style="text-align:center"> </i> 
+                      <button class="btn btn-success remove-record" type="button" data-toggle="modal" data-target="#modal-delete" data-id="{{$projectfiles->id}}" data-url="{{route('document.destroy', $projectfiles->id )}}"> <i class="fa fa-trash" style="text-align:center"> </i> 
                       </button> </td>
+                     
                       <td><form action="{{route('document.edit', $projectfiles->id)}}">
                       <input type="hidden" name="project_id" id="project_id" value="{{$project->id}}">
                       <button type="submit" class="btn btn-success"> <i class="fa fa-pencil" style="text-align:center"></i></button></form> </td>
                           
                       </tr>
-                      <div class="modal fade" id="modal-delete">
+                      
+                      @endforeach
+                      <form action="" method="POST" class="remove-record-model">
+                      {{ csrf_field() }}
+                      <div class="modal fade" id="modal-delete" >
                           <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                   <span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title">SPM Management File</h4>
-                              </div>
+                                  <h4 class="modal-title">SPM Management File</h4>
+                                </div>
                               <div class="modal-body">
                                 <h3 style="text-align:center"> Are you sure ? </h3>
                               </div>
                               <div class="modal-footer">
-                                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-                                <form action="{{route('document.destroy', $projectfiles->id)}}" method="POST">
-                                {{csrf_field()}}
-                                {{method_field('DELETE')}}
-                                <button class="btn btn-success" type="submit" value="Delete"> Delete </button>
-                                </form>
+                                <button type="button" class="btn btn-outline pull-left remove-data-from-delete-form" data-dismiss="modal">Close</button>
+                                <button class="btn btn-success " type="submit" value="Delete "> Delete </button>
                                           
                               </div>
+                            </div>
                           </div>
                       </div>
-                      @endforeach
+                      </form>
                     </tbody>
                     </table>
               </div>
@@ -112,4 +114,32 @@
 
         <!-- /.col -->
       </div>
+@include('sweet::alert')
+
+@endsection
+
+@section('script')
+<script>
+      $(document).ready(function(){
+        // For A Delete Record Popup
+        $('.remove-record').click(function() {
+          var id = $(this).attr('data-id');
+          console.log(id);
+          var url = $(this).attr('data-url');
+          // var token = ;
+          $(".remove-record-model").attr("action",url);
+          $('body').find('.remove-record-model').append('<input name="_token" type="hidden" value="{{csrf_token()}}">');
+          $('body').find('.remove-record-model').append('<input name="_method" type="hidden" value="DELETE">');
+          $('body').find('.remove-record-model').append('<input name="id" type="hidden" value="'+ id +'">');
+        });
+
+        $('.remove-data-from-delete-form').click(function() {
+          $('body').find('.remove-record-model').find( "input" ).remove();
+        });
+        $('.modal').click(function() {
+          // $('body').find('.remove-record-model').find( "input" ).remove();
+        });
+      });
+
+</script>
 @endsection

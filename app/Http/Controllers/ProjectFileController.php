@@ -45,16 +45,16 @@ class ProjectFileController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|max:128',
-            'file' => 'required|file|mimes:docx,doc,pdf,odt',
-            'description' => 'required |max:128',
-            
-        ]);
-        
         // return $request;
+        // $this->validate($request, [
+        //     'name' => 'required|max:128',
+        //     'file' => 'required|file|mimes:docx,doc,pdf,odt',
+        //     'description' => 'required |max:128',
+            
+        // ]);
+        
         // dd($request);
-       
+        
         $project = Project::all();
         $uploadedFile = $request->file('file');
         $destinationPath = ('public/files');   
@@ -67,9 +67,10 @@ class ProjectFileController extends Controller
             'upload_by' => $request->upload_by,
             'project_id' => $request->input('project_idx'),
             'related_by' => $request->related_by,
-        ]);
-       
-        // dd($request);
+            ]);
+            
+            return $request->related_by;
+        // return $request;
         $uploadedFile->storeAs($destinationPath,$filename);
         Alert::message('Document added successfully','Success');
         return redirect()->route('project.show', $request->input('project_idx'));
@@ -110,33 +111,40 @@ class ProjectFileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
-        $file = ProjectFile::findOrFail($id);
-        $this->validate($request, [
-            'name' => 'required|max:128',
-            'file' => 'required|file|mimes:docx,doc,pdf,odt',
-            'description' => 'required|max:128',
+        // $this->validate($request, [
+        //     'name' => 'required|max:128',
+        //     'description' => 'required |max:128',
             
-        ]);
+        //     ]);
+            
+            // $file = ProjectFile::findOrFail($id);
+            
+            $file = ProjectFile::findOrFail($id);
+            // return $file;
         
-        $uploadedFile = $request->file('file');
-        $destinationPath = ('public/files');   
-        $extension =  $uploadedFile->getClientOriginalExtension();
-        $filename = Uuid::generate(4).'.'.$extension;
-        $file = ProjectFile::update([
-            'name' => $request->document_name,
-            'filename' => $filename,
-            'description' => $request->description,
-            'project_id' => $request->input('project_idx'),
-            'upload_by' => $request->upload_by,
-            'related_by' => $request->related_by,
+        // return $request;
+        $file->name = $request->document_name;
+        $file->description = $request->description;
+        $file->project_id = $request->input('project_idx');
+        $file->upload_by = $request->upload_by;
+        $file->related_by = null;
+        $file->save();
 
-          
-        ]);
+        // dd($request);
             
-       
-        
-        $uploadedFile->storeAs($destinationPath,$filename);
+        if (empty($request->file('file'))){
+            $file->filename = $file->filename;
+        }
+        else{
+            // unlink('public/files'.$file->filename); //menghapus file lama
+            $uploadedFile = $request->file('file');
+            $destinationPath = ('public/files');   
+            $extension =  $uploadedFile->getClientOriginalExtension();
+            $filename = Uuid::generate(4).'.'.$extension;
+            $uploadedFile->storeAs($destinationPath,$filename);
+            $file->filename = $filename;
+        }
+        $file->save();
         Alert::message('Document update successfully','Success');
         // dd($request);
         return redirect()->route('project.show', $request->input('project_idx'));
@@ -151,10 +159,11 @@ class ProjectFileController extends Controller
      */
     public function destroy($id)
     {
+        // return $id;
         $projectfile = ProjectFile::findOrFail($id);
         $projectid = $projectfile->project_id;
         $projectfile->delete($id );
-
+        
         Alert::message('Document deleted successfully','Success');
         
         return redirect('/project'.'/'.$projectid)->with('projectfilestatus', 1);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Report;
 use App\MDStatus;
+use App\ProjectMember;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Alert;
@@ -148,6 +149,8 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
+        $projectmember = ProjectMember::where('user_id',$id);
+        $projectmember->delete();
         $user->delete();
         Alert::success('Deleted Success', 'Success');
         return redirect()->route('user.index');

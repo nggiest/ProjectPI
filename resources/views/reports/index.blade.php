@@ -168,4 +168,5 @@ var no = 1 ;
             
 
             </script>
+@include('sweet::alert')
 @endsection

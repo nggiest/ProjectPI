@@ -8,7 +8,7 @@ class ProjectFile extends Model
 {
     protected $table = 'project_file';
     protected $fillable = [
-        'name', 'description', 'filename','upload_by', 'project_id',
+        'name', 'description', 'filename','upload_by', 'project_id','related_by',
     ];
 
     public function projectsid()
@@ -19,5 +19,10 @@ class ProjectFile extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function relates()
+    {
+        return $this->belongsTo(ProjectFile::class, 'name');
     }
 }
