@@ -7,6 +7,13 @@
 @section('content')
 
 <div class="box box-info">
+            @if($errors->any())
+            <ul>
+              @foreach($errors->all() as $error)
+              <li>{{$error}}</li>
+              @endforeach
+            </ul>
+            @endif
         <div class="box-header with-border">
             <div class="box box-default">
                 <div class="box-heading">Create User</div>
@@ -18,7 +25,7 @@
 
                             <label for="name" class="col-sm-2 control-label">Name</label>
 
-                            <div class="col-sm-10">
+                            <div class="col-sm-9">
                                 <input id="name" type="text" class="form-control" name="name" required autofocus>
 
                                 @if ($errors->has('name'))
@@ -32,7 +39,7 @@
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-sm-2 control-label">E-Mail Address</label>
 
-                            <div class="col-sm-10">
+                            <div class="col-sm-9">
                                 <input id="email" type="email" class="form-control" name="email" required>
 
                                 @if ($errors->has('email'))
@@ -46,7 +53,7 @@
                         <div class="form-group {{ $errors->has('password') ? ' has-error' : '' }}">
                             <label for="password" class="col-sm-2 control-label">Password</label>
 
-                            <div class="col-sm-10">
+                            <div class="col-sm-9">
                                 <input id="password" type="password" class="form-control" name="password"  required>
 
                                 @if ($errors->has('password'))
@@ -60,19 +67,21 @@
                         <div class="form-group">
                             <label for="password-confirm" class="col-sm-2 control-label">Confirm Password</label>
 
-                            <div class="col-sm-10">
+                            <div class="col-sm-9">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                            </div>
                         </div>
-                        <br>
+                        
                           <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
                             <label for="activation" class="col-sm-2 control-label">Activation Status</label>
 
-                            <div class="col-sm-10">
-                            <select name="status" id="status" class="form-control select2" >
-                            
-                                <option name="status" id="status" value="{{$data = 'Active User' }}"> Active User </option>
+                            <div class="col-sm-9">
+                                <select name="status" id="status" class="form-control select2" >
+                                    <option name="status" id="status" value="">---Select Status---</option>
+                                
+                                    <option name="status" id="status" value="{{$data = 1 }}"> Active User </option>
 
-                                <option name="status" id="status" value="{{$data = 'Non Active User'}}">Non Active User </option>
+                                    <option name="status" id="status" value="{{$data = 0 }}"> Non Active User </option>
                                 </select>
                             </div>
                           </div>
@@ -80,12 +89,13 @@
                           <div class="form-group{{ $errors->has('role') ? ' has-error' : '' }}">
                             <label for="name" class="col-sm-2 control-label">Role</label>
 
-                            <div class="col-sm-10">
+                            <div class="col-sm-9">
                                 <select name="role" id="role" class="form-control select2" >
+                                <option name="role" id="role" value="">---Select Role---</option>
                                 <option name="role" id="role" value="{{$data = 'Admin'}}"> Admin </option>
                                 <option name="role" id="role" value="{{$data = 'User'}}"> User </option>
                                 </select>
-                          </div>
+                            </div>
                           </div>
 
 

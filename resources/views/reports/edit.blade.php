@@ -3,6 +3,13 @@
 @section('content')
 <div class="container">
   <div class="row">
+          @if($errors->any())
+            <ul>
+              @foreach($errors->all() as $error)
+              <li>{{$error}}</li>
+              @endforeach
+            </ul>
+            @endif
     <form id="giomales" method="POST" action="{{ route('daily.update', $reports->id)}}">
       {{ method_field('PUT') }}
       {{ csrf_field() }}
@@ -34,6 +41,7 @@
                             <label for="Project">Project</label>
                             <input type="hidden" class="ini" id="report_id" name ="report_id" value="{{$reports->id}}">
                             <select class="form-control ini" name="project_id">
+                            <option name="project_id" id="project_id" value="">---Select Project--- </option>
                               @foreach($projects as $project)
                               <option name="project_id" id="project_id" value="{{$project->id}}" {{ $react->project_id  == $project->id ? 'selected' : '' }}>{{$project->name}}</option>
                               @endforeach
@@ -50,6 +58,7 @@
                           <div class="form-group">
                                 <label for="Priority">Priority</label>
                                 <select class="form-control ini" name="priority">
+                                <option name="priority" id="priority" value="">---Select Priority--- </option>
                                   @foreach($priority as $priorities)
                                   <option id="priority" name="priority" value="{{$priorities->id}}" {{ $react->priority  == $priorities->id ? 'selected' : '' }}>{{$priorities->priority}}</option>
                                   @endforeach
@@ -58,6 +67,7 @@
                           <div class="form-group">
                               <label for="Status">Status</label>
                               <select class="form-control ini" name="status">
+                              <option name="status" id="status" value="">---Select Status--- </option>
                                 @foreach($status as $statuses)
                                 <option id="status" name="status" value="{{$statuses->id }}" {{ $react->status  == $statuses->id ? 'selected' : '' }}>{{$statuses->name}}</option>
                                 @endforeach

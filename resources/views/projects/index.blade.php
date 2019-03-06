@@ -30,7 +30,7 @@
                   <td>{{$project->name}}</td>
                   <td>{{$project->url}}</td>
                   <td>{{$project->start_date}}</td>
-                  <td>{{$project->status}}</td>
+                  <td>{{$project->statuses->name}}</td>
                   @if(Auth::user()->role == 'Admin')
                   <td>  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default">
                       Delete
@@ -75,7 +75,7 @@
             </tbody>
             </table>
            
-            
+            {{$projects->links()}}
         </div>
     </div>
 @include('sweet::alert')

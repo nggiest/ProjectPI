@@ -3,6 +3,13 @@
 @section('content')
 <div class="row">
     <div class="col-md-12">
+            @if($errors->any())
+            <ul>
+              @foreach($errors->all() as $error)
+              <li>{{$error}}</li>
+              @endforeach
+            </ul>
+            @endif
         <div class="box box-primary">
             <div class="box-title"> <h1 style="text-align:center"> {{$project -> name}} <span class="label label-success"> {{$project->statuses->name}} </span> </h3> </div>
             <h4 style="text-align:center"> {{$project->description}} </h2>

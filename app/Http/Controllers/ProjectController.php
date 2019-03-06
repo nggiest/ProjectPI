@@ -27,7 +27,7 @@ class ProjectController extends Controller
         if(Auth::user()->role == 'Admin') {
             $projects= $projects=DB::table('projects')
             ->join('md_status','md_status.id','=','projects.status')
-            ->select('projects.*','md_status.name as status')
+            ->select('projects.*','md_status.name as statuses')
             ->get();
         }
         else{ 
@@ -39,6 +39,7 @@ class ProjectController extends Controller
                     ->get();
             $projectstatus = Project::all();
         }
+        $projects=Project::paginate(10);
         return view('projects.index', compact('projects'));
     }
 
@@ -50,7 +51,7 @@ class ProjectController extends Controller
     public function create()
     {
         $status = MDStatus::all();
-        $user=User::where('status','=','Active User')->get();
+        $user=User::where('status','=', 1 )->get();
         $project=Project::all();
         if(Auth::user()->role == 'Admin'){
             
@@ -70,9 +71,9 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'name' => 'required|min:5',
-            'description' => 'required|min:7',
-            'url'=> 'required|min:10',
+            'name' => 'required|max:64',
+            'description' => 'required|min:128',
+            'url'=> 'required|max:128',
             'start_date' => 'required',
             'status' => 'required',
             
@@ -109,7 +110,7 @@ class ProjectController extends Controller
         ->join('projects', 'projects.id', '=', 'project_member.project_id')
         ->select('users.name', 'users.email')
         ->where('project_member.project_id', $id)
-        ->where('users.status','Active User')
+        ->where('users.status',1)
         ->get();
         $pff = ProjectFile::all();
         $projectfile = DB::table('project_file')->where('project_id',$id)->get();
@@ -132,7 +133,7 @@ class ProjectController extends Controller
     {
         $status = MDStatus::all();
         // $statusid = MDStatus::select('id');
-        $user=User::where('status','=','Active User')->get();
+        $user=User::where('status','=', 1 )->get();
         $project=Project::findOrFail($id);
        
         $projectmember =  DB::table('project_member')->select('user_id as user_id')->where('project_id',$id)->get();

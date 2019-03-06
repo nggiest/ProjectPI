@@ -4,6 +4,13 @@
     <div class="row">
         <div class="col-md-10 ">
             <div class="box box-default">
+            @if($errors->any())
+            <ul>
+              @foreach($errors->all() as $error)
+              <li>{{$error}}</li>
+              @endforeach
+            </ul>
+            @endif
                 <div class="box-heading">Change Password</div>
 
                 <div class="box-body">

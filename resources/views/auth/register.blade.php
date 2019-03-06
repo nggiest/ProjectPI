@@ -5,14 +5,13 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Create User</div>
+                <div class="panel-heading">Register</div>
 
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" action="{{ route('register') }}">
                         {{ csrf_field() }}
-                        
-                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
 
+                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-4 control-label">Name</label>
 
                             <div class="col-md-6">
@@ -61,26 +60,6 @@
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                             </div>
                         </div>
-
-                          <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">Activation Status</label>
-
-                            <div class="col-md-6">
-                                <input type="checkbox" id="status" name="status" value="{{$tdata = 'Active User'}}">Active User<br> 
-                            </div>
-                          </div>
-
-                          <div class="form-group{{ $errors->has('role') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">Role</label>
-
-                            <div class="col-md-6">
-                                <select name="role" id="role">
-                                <option name="role" id="role" value="{{$data = 'Admin'}}"> Admin </option>
-                                <option name="role" id="role" value="{{$data = 'User'}}"> User </option>
-                                </select>
-                            </div>
-                          </div>
-
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">

@@ -7,6 +7,10 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
+    
+
+
+
             <form role="form" method="POST" action="{{route('document.update', $file->id )}}"  enctype="multipart/form-data">
             {{ method_field('PUT') }}
             {{ csrf_field() }}
@@ -33,7 +37,7 @@
                     <select name="related_by" id="related_by">
                     <option name="related_by" id="related_by" value="">--Select Revision--</option>
                         @foreach($list as $pro)
-                        <option name="related_by" id="related_by" value="{{$pro->id}}"  related_by="{{$file->related_by}}" kikit='kikit' {{ $file->related_by ==  $pro->id  ? 'selected' : '' }} >{{$pro->name}} </option>
+                        <option name="related_by" id="related_by" value="{{$pro->id}}"  related_by="{{$file->related_by}}" {{ $file->related_by ==  $pro->id  ? 'selected' : '' }} >{{$pro->name}} </option>
                         @endforeach
                     </select>
               

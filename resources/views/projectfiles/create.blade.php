@@ -7,6 +7,12 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
+            @if($errors->any())
+            <ul>
+              @foreach($errors->all() as $error)
+              <li>{{$error}}</li>
+            </ul>
+            @endif
             <form role="form" method="post" action="{{route('document.store')}}"  enctype="multipart/form-data">
             {{ csrf_field() }}
             <div class="box-body">
@@ -43,7 +49,8 @@
               
              
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Submit</button> 
+                <form action="{{route('home')}}"><button type="button" class="btn btn-primary">Back Home</button></form>
               </div>
             </form>
           </div>

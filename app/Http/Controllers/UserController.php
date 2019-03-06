@@ -64,7 +64,7 @@ class UserController extends Controller
             'name' => 'required|string|min:8|max:128',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'status'=> 'required|min:4',
+            'status'=> 'required',
             'role' => 'required',
             
         ]);
@@ -124,6 +124,14 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         
+        $this->validate($request,[
+            'name' => 'required|string|min:8|max:128',
+            'email' => 'required|string|email|max:255',
+            'status'=> 'required',
+            'role' => 'required',
+            
+        ]);
+        
         $user = User::findOrFail($id);
         $user->password = Hash::make('password');
         $user->update([
@@ -165,6 +173,9 @@ class UserController extends Controller
 
     public function gantipwd(Request $request, $id){
         $user = User::findOrFail($id);
+        $this->validate($request,[
+            'password' => 'required|string|min:6|confirmed',
+        ]);
         $user->update([
             'password' => bcrypt($request['password']),
         ]);

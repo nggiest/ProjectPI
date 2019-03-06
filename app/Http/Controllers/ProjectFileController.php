@@ -45,13 +45,13 @@ class ProjectFileController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request;
-        // $this->validate($request, [
-        //     'name' => 'required|max:128',
-        //     'file' => 'required|file|mimes:docx,doc,pdf,odt',
-        //     'description' => 'required |max:128',
+        return $request;
+        $this->validate($request, [
+            'name' => 'required|max:128',
+            'file' => 'required|file|mimes:docx,doc,pdf,odt',
+            'description' => 'required |max:128',
             
-        // ]);
+        ]);
         
         // dd($request);
         
@@ -111,11 +111,11 @@ class ProjectFileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $this->validate($request, [
-        //     'name' => 'required|max:128',
-        //     'description' => 'required |max:128',
+        $this->validate($request, [
+            'name' => 'required|max:128',
+            'description' => 'required |max:128',
             
-        //     ]);
+            ]);
             
             // $file = ProjectFile::findOrFail($id);
             

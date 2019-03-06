@@ -24,12 +24,20 @@ class ReportController extends Controller
     {
        $report = Report::select('*')->where('user', Auth::user()->id)->get();
        //    $reportcount = ReportActivity::selectRaw('count(report_id)')->groupBy('report_id')->where('report_id', $reports->id)->first(); 
-
-       foreach ($report as $reports) {
+       try {
+        foreach ($report as $reports) {
             $reports->repact = ReportActivity::where('report_id',$reports->id)->get();
             // $reports->repact = ReportActivity::all();
-            $reports->reportcount = DB::table('reportactivity')->select(DB::Raw('count(report_id) as countId'))->groupBy('report_id')->where('report_id', $reports->id)->first(); 
+            $reports->reportcount = DB::table('reportactivity')->select(DB::Raw('count(report_id) as countid'))->groupBy('report_id')->where('report_id', $reports->id)->first(); 
        }
+    }
+
+    catch(ModelNotFoundException $e) {
+        foreach ($report as $reports) {
+            $reports->reportcount->countid = 0 ;
+        }
+    }
+       
     //    return $report;
        return view('reports.index', compact ('report'));
         
@@ -63,37 +71,49 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-            DB::beginTransaction();
+        
+      try {
+        DB::beginTransaction();
 
-            try {
-                // Interacting with the database
-                $report = Report::create([
-                    'user' => Auth::user()->id,
-                    'date' => $request['date'],
-                ]);
-                $id = $report->id;
-                $data = [] ;
-                foreach ($request['activities'] as $activity) {
-                    array_push($data, 
-                        [
-                            'project_id' => $activity['project_id'],
-                            'report_id' => $id,
-                            'module' => $activity['module'],
-                            'activity' =>  $activity['activity'],
-                            'priority' => $activity['priority'],
-                            'status' => $activity['status']
-                        ]
-                    );           
-                }  
-                ReportActivity::insert($data);
-                DB::commit();    // Commiting  ==> There is no problem whatsoever
-            } catch (Exception $e) {
-                DB::rollback();   // rollbacking  ==> Something went wrong
+        try {
+            // Interacting with the database
+            $report = Report::create([
+                'user' => Auth::user()->id,
+                'date' => $request['date'],
+            ]);
+            $id = $report->id;
+            $data = [] ;
+            foreach ($request['activities'] as $activity) {
+                array_push($data, 
+                    [
+                        'project_id' => $activity['project_id'],
+                        'report_id' => $id,
+                        'module' => $activity['module'],
+                        'activity' =>  $activity['activity'],
+                        'priority' => $activity['priority'],
+                        'status' => $activity['status']
+                    ]
+                );           
             }
+           
+            ReportActivity::insert($data);
+            DB::commit();    // Commiting  ==> There is no problem whatsoever
+        } catch (Exception $e) {
+            DB::rollback();   // rollbacking  ==> Something went wrong
+        }
 
-       
-            Alert::message('Report created successfully','Success');
+   
+        Alert::message('Report created successfully','Success');
 
+
+      }  
+
+      catch(\Illuminate\Database\QueryException $ex){ 
+        Alert::error('Report Duplicated', 'Error'); 
+        // Note any method of class PDOException can be called on $ex.
+      }
+        
+            
             return redirect('/daily');
     //    }
     //    return $data;    
@@ -144,6 +164,7 @@ class ReportController extends Controller
     public function update(Request $request, $id)
     {
         // return ($request);
+       
         DB::beginTransaction();
 
             try {

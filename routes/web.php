@@ -32,3 +32,11 @@ Route::get('/daily/getDaily/{id}', 'ReportController@getData');
 Route::get('/user/cp/{id}', 'UserController@changepassword')->name('user.change');
 Route::match(['put', 'patch'], '/user/cp/{id}', 'UserController@gantipwd')->name('user.ganti');
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

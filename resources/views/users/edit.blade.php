@@ -8,7 +8,13 @@
         <div class="col-md-10 ">
             <div class="box box-default">
                 <div class="box-heading">User Profile</div>
-
+                @if($errors->any())
+                <ul>
+                @foreach($errors->all() as $error)
+                <li>{{$error}}</li>
+                </ul>
+                @endforeach
+                @endif
                 <div class="box-body">
                     <form class="form-horizontal" method="POST" action="{{ route('user.update', $user->id) }}">
                         {{ csrf_field() }}
@@ -54,8 +60,8 @@
 
                             <div class="col-md-6">
                             <select name="status" id="status" class="form-control select2" >
-                                <option name="status" id="status" value="{{$data = 'Active User'}}" {{ $user->status  == $data ? 'selected' : '' }} > Active User </option>
-                                <option name="status" id="status" value="{{$data = 'Non Active User'}}" {{ $user->status  == $data ? 'selected' : '' }}> Non Active User </option>
+                                <option name="status" id="status" value="{{$data = 1 }}" {{ $user->status  == $data ? 'selected' : '' }} > Active User </option>
+                                <option name="status" id="status" value="{{$data = 0 }}" {{ $user->status  == $data ? 'selected' : '' }}> Non Active User </option>
                                 </select>
                             </div>
                           </div>

@@ -111,6 +111,9 @@
                                                 <button type="submit" class="btn btn-primary pull-right">
                                                     Create
                                                 </button>
+                                                <form action="{{route('home')}}">
+                                                    <button type="button" class="btn btn-primary">Back Home</button>
+                                                </form>
                         </div>
 
                 </div>

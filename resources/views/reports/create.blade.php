@@ -6,6 +6,13 @@
     <form id="giomales" method="POST" action="{{ route('daily.store')}}">
         <div class="col-md-12">
             <div class="box box-primary">
+            @if($errors->any())
+            <ul>
+              @foreach($errors->all() as $error)
+              <li>{{$error}}</li>
+              @endforeach
+            </ul>
+            @endif
                 <div class="panel-heading">Daily Report</div>
                 <div class="panel-body">
                     <form class="form-horizontal" >
@@ -38,6 +45,7 @@
                   <div class="form-group">
                     <label for="Project">Project</label>
                     <select class="form-control ini" name="project_id">
+                    <option name="project_id" id="project_id" value="">---Select Project--- </option>
                       @foreach($project as $projects)
                       <option name="project_id" id="project_id" value="{{$data = $projects->id}}">{{$projects->name}}</option>
                       @endforeach
@@ -54,6 +62,7 @@
                   <div class="form-group">
                         <label for="Priority">Priority</label>
                         <select class="form-control ini" name="priority">
+                        <option name="priority" id="priority" value="">---Select Priority--- </option>
                           @foreach($priority as $priority)
                           <option id="priority" name="priority" value="{{$data = $priority->id}}">{{$priority->priority}}</option>
                           @endforeach
@@ -62,6 +71,7 @@
                   <div class="form-group">
                       <label for="Status">Status</label>
                       <select class="form-control ini" name="status">
+                      <option name="status" id="status" value="">---Select Status--- </option>
                         @foreach($status as $status)
                         <option id="status" name="status" value="{{$data = $status->id }}">{{$status->name}}</option>
                         @endforeach
@@ -98,9 +108,10 @@ var count = 1;
           // Global unique counter
     $('#btn1').click(function() {
         count++; // Increment counter
-        $('.cloningan:first').clone(true).appendTo('#box-activities'). // Clone and append
+        $('.cloningan:first').clone(true).find("input:text").val("").end().appendTo('#box-activities'). // Clone and append
           filter('[id]').each(function() { // For each new item with an ID
             this.id = this.id + '_' + count; // Append the counter to the ID
+           
         });
     });
 
@@ -118,6 +129,8 @@ var count = 1;
       $(el).find('.ini').each(function(j, fel){
         var name = $(fel).attr('name');
         $(fel).attr('name', 'activities['+i+']['+name+']');
+        $(fel).attr('name', 'activities['+i+']['+name+']').reset();
+
       });
     });
   });
