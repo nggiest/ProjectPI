@@ -15,11 +15,11 @@
       {{ csrf_field() }}
        <div class="col-md-12">
             <div class="box box-primary">
-                <div class="panel-heading">Daily Report</div>
+                <div class="box-title"><h3 style="text-align:center">Daily Report</h3></div>
                 <div class="panel-body">
                         <input type="hidden" name="user" id="user" value="{{Auth::user()->id}}">
-                        <div class="col-md-6">
-                          <label> Date </label>
+                          <label class="col-md-2"> Date </label>
+                        <div class="col-md-9">
                                 <input id="date" type="date" class="form-control" name="date" value="{{$reports->date}}" disabled required>
                         </div> 
                 </div>
@@ -29,49 +29,58 @@
               @foreach($reportactivity as $react )
                 <div class="box box-primary cloningan" id="myactivities[]">
                
-                    <div class="box-header with-border">
-                      <h3 class="box-title">My Report</h3>
-                      <button class="btn btn-box-tool delbutton" type="button"><i class="fa fa-times"></i></button>
+                    <div class="box-title"><h3 style="text-align:center">My Report
+                      <button class="btn btn-box-tool delbutton" type="button"><i class="fa fa-times"></i></button> </h3>
                     </div>
                     <div class="box-body" id="activitybox">
                     
-                        <div class="form-block">
+                        <div class="form-horizontal">
                           <div class="form-group">
                 
-                            <label for="Project">Project</label>
+                            <label class="col-md-2" for="Project">Project</label>
                             <input type="hidden" class="ini" id="report_id" name ="report_id" value="{{$reports->id}}">
+                            <div class="col-md-9">
                             <select class="form-control ini" name="project_id">
-                            <option name="project_id" id="project_id" value="">---Select Project--- </option>
+                              <option name="project_id" id="project_id" value="">---Select Project--- </option>
                               @foreach($projects as $project)
                               <option name="project_id" id="project_id" value="{{$project->id}}" {{ $react->project_id  == $project->id ? 'selected' : '' }}>{{$project->name}}</option>
                               @endforeach
                             </select>
+                            </div>
                           </div>
                           <div class="form-group">
-                            <label for="">Module/Parts</label>
+                            <label class="col-md-2" for="">Module/Parts</label>
+                            <div class="col-md-9">
                             <input type="text" class="form-control ini" id="module" name="module" value="{{$react->module}}"placeholder="Module">
+                            </div>
                           </div>
                           <div class="form-group">
-                            <label for="">Activity</label>
+                            <label class="col-md-2" for="">Activity</label>
+                            <div class="col-md-9">
                             <input type="text" class="form-control ini" id="activity" name="activity" adplaceholder="Activity" value="{{$react->activity}}">
+                            </div>
                           </div>
                           <div class="form-group">
-                                <label for="Priority">Priority</label>
+                                <label class="col-md-2" for="Priority">Priority</label>
+                                <div class="col-md-9">
                                 <select class="form-control ini" name="priority">
                                 <option name="priority" id="priority" value="">---Select Priority--- </option>
                                   @foreach($priority as $priorities)
                                   <option id="priority" name="priority" value="{{$priorities->id}}" {{ $react->priority  == $priorities->id ? 'selected' : '' }}>{{$priorities->priority}}</option>
                                   @endforeach
                                 </select>
+                                </div>
                           </div>
                           <div class="form-group">
-                              <label for="Status">Status</label>
+                              <label class="col-md-2" for="Status">Status</label>
+                              <div class="col-md-9">
                               <select class="form-control ini" name="status">
                               <option name="status" id="status" value="">---Select Status--- </option>
                                 @foreach($status as $statuses)
                                 <option id="status" name="status" value="{{$statuses->id }}" {{ $react->status  == $statuses->id ? 'selected' : '' }}>{{$statuses->name}}</option>
                                 @endforeach
                               </select>
+                              </div>
                           </div>
                         </div>
                     </div>

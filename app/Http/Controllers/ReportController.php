@@ -24,25 +24,21 @@ class ReportController extends Controller
     {
        $report = Report::select('*')->where('user', Auth::user()->id)->get();
        //    $reportcount = ReportActivity::selectRaw('count(report_id)')->groupBy('report_id')->where('report_id', $reports->id)->first(); 
-       try {
+    
         foreach ($report as $reports) {
             $reports->repact = ReportActivity::where('report_id',$reports->id)->get();
             // $reports->repact = ReportActivity::all();
             $reports->reportcount = DB::table('reportactivity')->select(DB::Raw('count(report_id) as countid'))->groupBy('report_id')->where('report_id', $reports->id)->first(); 
-       }
-    }
+    //    }
+    // }
 
-    catch(ModelNotFoundException $e) {
-        foreach ($report as $reports) {
-            $reports->reportcount->countid = 0 ;
-        }
+    // catch(ModelNotFoundException $e) {
+    //     foreach ($report as $reports) {
+    //         $reports->reportcount->countid = 0 ;
+    //     }
     }
-       
-    //    return $report;
        return view('reports.index', compact ('report'));
-        
-    
-    }
+}
 
     /**
      * Show the form for creating a new resource.
@@ -71,7 +67,6 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-        
       try {
         DB::beginTransaction();
 
@@ -83,29 +78,23 @@ class ReportController extends Controller
             ]);
             $id = $report->id;
             $data = [] ;
-            foreach ($request['activities'] as $activity) {
+            foreach($request['activities'] as $repact) {
                 array_push($data, 
-                    [
-                        'project_id' => $activity['project_id'],
-                        'report_id' => $id,
-                        'module' => $activity['module'],
-                        'activity' =>  $activity['activity'],
-                        'priority' => $activity['priority'],
-                        'status' => $activity['status']
-                    ]
-                );           
-            }
-           
-            ReportActivity::insert($data);
+                        [
+                            'project_id' => $repact['project_id'],
+                            'report_id' => $report->id,
+                            'module' => $repact['module'],
+                            'activity' =>  $repact['activity'],
+                            'priority' => $repact['priority'],
+                            'status' => $repact['status'],
+                        ]);
+                } 
+                ReportActivity::insert($data);
             DB::commit();    // Commiting  ==> There is no problem whatsoever
         } catch (Exception $e) {
             DB::rollback();   // rollbacking  ==> Something went wrong
         }
-
-   
         Alert::message('Report created successfully','Success');
-
-
       }  
 
       catch(\Illuminate\Database\QueryException $ex){ 
@@ -115,9 +104,7 @@ class ReportController extends Controller
         
             
             return redirect('/daily');
-    //    }
-    //    return $data;    
-
+   
        
     }
 

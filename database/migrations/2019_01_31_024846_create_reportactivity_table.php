@@ -15,12 +15,12 @@ class CreateReportactivityTable extends Migration
     {
         Schema::create('reportactivity', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('project_id');
-            $table->string('report_id');
+            $table->integer('project_id');            
+            $table->integer('report_id');
             $table->string('module');
             $table->string('activity');
-            $table->string('priority');
-            $table->string('status');
+            $table->integer('priority');
+            $table->integer('status');
             $table->timestamps();
         });
     }

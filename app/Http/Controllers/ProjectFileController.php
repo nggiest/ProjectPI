@@ -45,16 +45,13 @@ class ProjectFileController extends Controller
      */
     public function store(Request $request)
     {
-        return $request;
+        
         $this->validate($request, [
             'name' => 'required|max:128',
             'file' => 'required|file|mimes:docx,doc,pdf,odt',
             'description' => 'required |max:128',
             
         ]);
-        
-        // dd($request);
-        
         $project = Project::all();
         $uploadedFile = $request->file('file');
         $destinationPath = ('public/files');   
@@ -68,9 +65,6 @@ class ProjectFileController extends Controller
             'project_id' => $request->input('project_idx'),
             'related_by' => $request->related_by,
             ]);
-            
-            return $request->related_by;
-        // return $request;
         $uploadedFile->storeAs($destinationPath,$filename);
         Alert::message('Document added successfully','Success');
         return redirect()->route('project.show', $request->input('project_idx'));

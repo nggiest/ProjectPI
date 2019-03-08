@@ -19,7 +19,7 @@ class CreateProjectTable extends Migration
             $table->string('description');
             $table->string('url');
             $table->date('start_date');
-            $table->string('status');
+            $table->integer('status');
             $table->timestamps();
         });
     }

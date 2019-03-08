@@ -72,8 +72,8 @@ class ProjectController extends Controller
     {
         $this->validate($request,[
             'name' => 'required|max:64',
-            'description' => 'required|min:128',
-            'url'=> 'required|max:128',
+            'description' => 'required|max:128',
+            'url'=> 'required|max:128|url',
             'start_date' => 'required',
             'status' => 'required',
             
@@ -212,7 +212,7 @@ class ProjectController extends Controller
         $project = Project::findOrFail($id);
        
 
-        if (ProjectFile::where('project_id', $id)->exists())
+        if (ProjectMember::where('project_id', $id)->exists())
         {
             $projectmember = ProjectMember::select('*')->where('project_id', $id)->get();
             // $projectmemberid = $projectmember->project_id;

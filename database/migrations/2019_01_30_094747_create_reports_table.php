@@ -15,8 +15,8 @@ class CreateReportsTable extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user')->unsigned()->index()->nullable();
-            $table->foreign('user')->references('id')->on('users');
+            $table->integer('user_id')->unsigned()->index()->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->date('date');
             $table->timestamps();
         });

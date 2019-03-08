@@ -19,7 +19,7 @@ class CreateProjectFileTable extends Migration
             $table->string('name');
             $table->integer('project_id');
             $table->string('filename');
-            $table->string('upload_by');
+            $table->integer('upload_by');
             $table->timestamps();
         });
     }

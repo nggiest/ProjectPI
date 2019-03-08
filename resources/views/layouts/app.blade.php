@@ -78,7 +78,7 @@
 
                 <p>
                   {{Auth::user()->name }} - {{Auth::user()->role}}
-                  <small>{{Auth::user()->status}}</small>
+                  <small>{{Auth::user()->status == 1 ? 'Active User' : 'Inactive User'}}</small>
                 </p>
               </li>
               <!-- Menu Body -->
