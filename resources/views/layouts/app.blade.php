@@ -39,6 +39,7 @@
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
+@if(Auth::check())
 <body class="hold-transition skin-blue sidebar-mini">
 
   <div class="wrapper">
@@ -58,15 +59,7 @@
       </a>
 
       <div class="navbar-custom-menu">
-      @if(Auth::check())
         <ul class="nav navbar-nav">
-          <!-- Messages: style can be found in dropdown.less-->
-                    <!-- Notifications: style can be found in dropdown.less -->
-          
-          <!-- Tasks: style can be found in dropdown.less -->
-          
-          <!-- User Account: style can be found in dropdown.less -->
-          
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <span class="hidden-xs">{{Auth::user()->name}}</span>
@@ -101,14 +94,10 @@
               </li>
             </ul>
           </li>
-          @else
-
-          @endif
         </ul>
       </div>
     </nav>
   </header>
-  @if(Auth::check())
   <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
@@ -116,9 +105,6 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
       </div>
-      <!-- search form -->
-      <!-- /.search form -->
-      <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">Menu</li>
         @if(Auth::user()->role == 'Admin')
@@ -191,16 +177,17 @@
     </section>
     <!-- /.sidebar -->
   </aside>
-  @else
-<p></p>
-@endif
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
     <!-- Content Header (Page header) -->
+  <div class="content-wrapper">
+
     <section class="content-header">
       @yield('title')
     </section>
 
+  @else
+<body class="hold-transition login-page">
+@endif
     <!-- Main content -->
     <section class="content">
       @yield('content')
@@ -209,34 +196,6 @@
     </section>
     <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
-  <!-- <footer >
-    <div class="pull-right hidden-xs">
-      <b>Version</b> 1.0
-    </div>
-    <strong>Copyright Giovanni Anggiesta</strong>
-  </footer> -->
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Create the tabs -->
-    <!-- Tab panes -->
-    <div class="tab-content">
-      <!-- Home tab content -->
-      <!-- /.tab-pane -->
-      <!-- Stats tab content -->
-      <!-- /.tab-pane -->
-      <!-- Settings tab content -->
-      <!-- /.tab-pane -->
-    </div>
-  </aside>
-  <!-- /.control-sidebar -->
-  <!-- Add the sidebar's background. This div must be placed
-       immediately after the control sidebar -->
-  <div class="control-sidebar-bg"></div>
-</div>
-<!-- ./wrapper -->
-
 </body>
 @yield('script')
 <script>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="login-box col-sm 8 ">
+<div class="login-box">
   <div class="login-logo">
     <b>SPE File Management</b>
     <a>Login</a>
