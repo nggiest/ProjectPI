@@ -15,12 +15,16 @@ class CreateReportactivityTable extends Migration
     {
         Schema::create('reportactivity', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('project_id');            
-            $table->integer('report_id');
+            $table->integer('project_id')->unsigned()->index()->nullable();            
+            $table->foreign('project_id')->references('id')->on('projects');            
+            $table->integer('report_id')->unsigned()->index()->nullable();
+            $table->foreign('report_id')->references('id')->on('reports');
             $table->string('module');
             $table->string('activity');
-            $table->integer('priority');
-            $table->integer('status');
+            $table->integer('priority')->unsigned()->index()->nullable();
+            $table->foreign('priority')->references('id')->on('md_priority');
+            $table->integer('status')->unsigned()->index()->nullable();
+            $table->foreign('status')->references('id')->on('md_status');
             $table->timestamps();
         });
     }

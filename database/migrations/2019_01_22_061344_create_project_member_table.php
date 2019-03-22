@@ -15,8 +15,8 @@ class CreateProjectMemberTable extends Migration
     {
         Schema::create('project_member', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('project_id');
-            $table->integer('user_id');
+            $table->integer('project_id')->unsigned()->index()->nullable();
+            $table->integer('user_id')->unsigned()->index()->nullable();
             $table->timestamps();
         });
     }
