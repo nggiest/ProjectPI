@@ -1,42 +1,60 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
+
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ProjectFileController;
+use App\Http\Controllers\ReportActivityController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
 */
 
 Route::get('/', function () {
-    if(!Session::get('login')){
+    if (! Session::get('login')) {
         return redirect('login');
     }
-    else{
-        return view('home');
-    }
-    
+
+    return view('home');
 });
 
-Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('/project', 'ProjectController');
-Route::resource('/user', 'UserController');
-Route::resource('/daily', 'ReportController');
-Route::resource('/document', 'ProjectFileController');
-Route::post('/report','ReportActivityController@store')->name('report.save');
-Route::get('/daily/getDaily/{id}', 'ReportController@getData');
-Route::get('/user/cp/{id}', 'UserController@changepassword')->name('user.change');
-Route::match(['put', 'patch'], '/user/cp/{id}', 'UserController@gantipwd')->name('user.ganti');
-
+/*
+|--------------------------------------------------------------------------
+| Authentication
+|--------------------------------------------------------------------------
+*/
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', [HomeController::class, 'index'])
+    ->name('home');
 
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('/project', ProjectController::class);
+
+Route::resource('/user', UserController::class);
+
+Route::get('/user/cp/{id}', [UserController::class, 'changepassword'])
+    ->name('user.change');
+
+Route::match(
+    ['put', 'patch'],
+    '/user/cp/{id}',
+    [UserController::class, 'gantipwd']
+)->name('user.ganti');
+
+Route::resource('/daily', ReportController::class);
+
+Route::get('/daily/getDaily/{id}', [ReportController::class, 'getData']);
+
+Route::resource('/document', ProjectFileController::class);
+
+Route::post('/report', [ReportActivityController::class, 'store'])
+    ->name('report.save');
